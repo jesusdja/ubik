@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "377196700413",
+    "project_id": "ubikapp-a91a8",
+    "storage_bucket": "ubikapp-a91a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377196700413:android:0658ec262c0496265e5494",
+        "android_client_info": {
+          "package_name": "com.ubikapp.ubik"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "377196700413-albaivik8f0cscuoj05vo7j84afhd6il.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ubikapp.ubik",
+            "certificate_hash": "8950e771df30d8a01461abc392b32dc8e83aaab9"
+          }
+        },
+        {
+          "client_id": "377196700413-v09at726n4eqs0hanf0e2ef4jbmvttog.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOrbqUuK73eRFoHBFueSCLPWv3H70Kc6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "377196700413-v09at726n4eqs0hanf0e2ef4jbmvttog.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:ubik/providers/auth_provider.dart';
 import 'package:ubik/services/sharedprefereces.dart';
 
+double sizeH = 0;
+double sizeW = 0;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Provider.debugCheckInvalidValueType = null;
