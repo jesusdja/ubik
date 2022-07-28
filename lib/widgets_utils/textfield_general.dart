@@ -69,7 +69,7 @@ class TextFieldGeneral extends StatelessWidget {
     this.autofocus = false,
     this.textInputAction,
     this.constraints,
-    this.radius = 10.0,
+    this.radius = 5.0,
     this.inputFormatters = const [],
   }) : super(key: key);
 

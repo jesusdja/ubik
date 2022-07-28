@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ubik/initial_page.dart';
 import 'package:ubik/providers/auth_provider.dart';
 import 'package:ubik/services/sharedprefereces.dart';
 
@@ -36,20 +37,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Ubi-k',
-      builder: ( _ , child ){
-        final authProvider = Provider.of<AuthProvider>(context);
-
-        if ( authProvider.authStatus == AuthStatus.checking ) {
-          return const Scaffold(body: SizedBox(child: Center(child: Text('checking')),),);
-        }
-        if( authProvider.authStatus == AuthStatus.login ) {
-          return const Scaffold(body: SizedBox(child: Center(child: Text('login')),),);
-        }
-        if( authProvider.authStatus == AuthStatus.home ) {
-          return const Scaffold(body: SizedBox(child: Center(child: Text('home')),),);
-        }
-        return const Scaffold(body: SizedBox(child: Center(child: Text('checking')),),);
-      },
+      home: const InitialPage(),
       theme: ThemeData.light().copyWith(
           scrollbarTheme: const ScrollbarThemeData().copyWith(
               thumbColor: MaterialStateProperty.all(

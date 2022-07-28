@@ -1,68 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:ubik/config/ubik_colors.dart';
-import 'package:ubik/config/ubik_style.dart';
 
 class ButtonGeneral extends StatelessWidget {
-  final String? title;
-  final VoidCallback? onPressed;
+  final String title;
+  final double? height;
+  final double? width;
   final double radius;
-  final double height;
-  final double width;
-  final double textSize;
   final Color backgroundColor;
   final Color borderColor;
-  final Color textColor;
-  final bool bold;
+  final Color iconColor;
   final EdgeInsets margin;
   final EdgeInsets titlePadding;
-  final IconData? icon;
+  final Widget? icon;
   final TextStyle? textStyle;
-  final int? maxLines;
-  final bool isBoxShadow;
-  final Color colorBoxShadow;
-  final double spreadRadiusBoxShadow;
-  final double blurRadiusBoxShadow;
-  final Offset offsetBoxShadow;
-  final bool loadButton;
-  final Color colorCircular;
-  final Widget? widgetLatIzq;
-  final Widget? widgetLatDer;
+  final VoidCallback onPressed;
 
   const ButtonGeneral({
     Key? key,
     required this.title,
     required this.onPressed,
-    this.radius = 10,
-    this.bold = false,
     this.icon,
-    this.height = 10,
-    this.width = 30,
-    this.textSize = 16.0,
+    this.height,
+    this.width,
+    this.textStyle,
     this.backgroundColor = Colors.white,
     this.borderColor = Colors.transparent,
-    this.textColor = Colors.black,
+    this.iconColor = UbicaColors.primary,
     this.margin = const EdgeInsets.all(0.0),
     this.titlePadding = const EdgeInsets.all(0.0),
-    this.textStyle,
-    this.maxLines,
-    this.isBoxShadow = false,
-    this.colorBoxShadow = Colors.grey,
-    this.spreadRadiusBoxShadow = 1,
-    this.blurRadiusBoxShadow = 15,
-    this.offsetBoxShadow = const Offset(0,0),
-    this.loadButton = false,
-    this.colorCircular = UbicaColors.primary,
-    this.widgetLatIzq,
-    this.widgetLatDer,
-  }) : super(key: key);
-
-
+    this.radius = 5.0,
+  }): super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-    TextStyle textStyleLocal = textStyle ?? UbikStyles().stylePrimary();
-
     return Container(
       margin: margin,
       height: height,
@@ -75,46 +45,24 @@ class ButtonGeneral extends StatelessWidget {
           width: 1.5,
           style: BorderStyle.solid,
         ),
-        boxShadow:  [
-          isBoxShadow ? BoxShadow(
-            color: colorBoxShadow,
-            spreadRadius: spreadRadiusBoxShadow,
-            blurRadius: blurRadiusBoxShadow,
-            offset: offsetBoxShadow,
-          ) : const BoxShadow(),
-        ]
       ),
-      child:
-      loadButton ?
-      Center(
-        child: SizedBox(
-          height: height * 0.6,width: height * 0.6,
-          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(colorCircular))
-        ),
-      )
-          :
-      Material(
+      child: Material(
         color: Colors.transparent,
         child: InkWell(
-          splashColor: UbicaColors.primary.withOpacity(0.5),
           borderRadius: BorderRadius.circular(radius),
           onTap: onPressed,
           child: Center(
             child: Padding(
               padding: titlePadding,
-              child: icon != null ? Icon(icon,color: textColor,) :
-              Row(
-                children: [
-                  widgetLatDer ?? Container(),
-                  Expanded(
-                    child: Text(
-                      title ?? '',
-                      maxLines: maxLines,
-                      style: textStyleLocal,
-                      textAlign: TextAlign.center,
-                    ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  icon ?? Container(),
+                  Text(
+                    title,
+                    style: textStyle,
                   ),
-                  widgetLatIzq ?? Container()
                 ],
               ),
             ),

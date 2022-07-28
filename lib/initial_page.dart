@@ -33,9 +33,6 @@ class _InitialPageState extends State<InitialPage> {
 
     final authProvider = Provider.of<AuthProvider>(context);
 
-    if ( authProvider.authStatus == AuthStatus.checking ) {
-      return const Scaffold(body: SizedBox(child: Center(child: Text('checking')),),);
-    }
     if( authProvider.authStatus == AuthStatus.login ) {
       return const LoginPage();
     }

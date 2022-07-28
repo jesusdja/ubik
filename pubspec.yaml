@@ -44,3 +44,32 @@ flutter:
   assets:
     - assets/image/
     - assets/image/bands/
+  fonts:
+    - family: Montserrat-Black
+      fonts:
+        - asset: assets/fonts/Montserrat/Montserrat-Black.ttf
+          weight: 700
+    - family: Montserrat-Bold
+      fonts:
+        - asset: assets/fonts/Montserrat/Montserrat-Bold.ttf
+          weight: 700
+    - family: Montserrat-Light
+      fonts:
+        - asset: assets/fonts/Montserrat/Montserrat-Light.ttf
+          weight: 700
+    - family: Montserrat-Medium
+      fonts:
+        - asset: assets/fonts/Montserrat/Montserrat-Medium.ttf
+          weight: 700
+    - family: Montserrat-Regular
+      fonts:
+        - asset: assets/fonts/Montserrat/Montserrat-Regular.ttf
+          weight: 700
+    - family: Montserrat-SemiBold
+      fonts:
+        - asset: assets/fonts/Montserrat/Montserrat-SemiBold.ttf
+          weight: 700
+    - family: Montserrat-Thin
+      fonts:
+        - asset: assets/fonts/Montserrat/Montserrat-Thin.ttf
+          weight: 700

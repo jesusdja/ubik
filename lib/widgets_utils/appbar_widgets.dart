@@ -18,7 +18,7 @@ AppBar appBarWidget({
   Widget? leadingW,
   }){
 
-  styleTitle = styleTitle ?? UbikStyles().stylePrimary(size: sizeH * 0.023,color: Colors.white,fontWeight: FontWeight.bold);
+  styleTitle = styleTitle ?? UbicaStyles().stylePrimary(size: sizeH * 0.023,color: Colors.white,fontWeight: FontWeight.bold);
 
   Widget leadingW2 = leadingW ?? InkWell(
     child: Icon(icon,size: sizeH * 0.03,color: colorIcon,),

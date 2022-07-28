@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-void showAlert({required String text,required bool isError,int sec = 3,}){
-
-  Color color = isError ? Colors.redAccent : Colors.green;
-
+void showAlert({required String text,required Color color,int sec = 3,}){
   Fluttertoast.showToast(
     msg: text,
     toastLength: Toast.LENGTH_SHORT,

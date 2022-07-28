@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 Text(
                   '¿No tienes cuenta?',
-                  style: UbikStyles().stylePrimary(size: sizeH * 0.023, color: UbicaColors.white,fontWeight: FontWeight.w700),
+                  style: UbicaStyles().stylePrimary(size:sizeH * 0.023, color: UbicaColors.white,enumStyle: EnumStyle.semiBold),
                 ),
                 SizedBox(
                   height: sizeH * 0.03,
@@ -122,19 +122,21 @@ class _LoginPageState extends State<LoginPage> {
                     //router.Router.navigator.pushNamed(router.Router.registerPage)
                   },
                   backgroundColor: UbicaColors.white,
-                  textStyle: UbikStyles().stylePrimary(size: sizeH * 0.020,),
+                  textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.018,enumStyle: EnumStyle.regular),
                   height: sizeH * 0.05,
+                  width: sizeW * 0.5,
                 ),
                 SizedBox(
                   height: sizeH * 0.05,
                 ),
                 ButtonGeneral(
+                  width: sizeW * 0.5,
                   title: 'Olvidé mi contraseña',
                   backgroundColor: UbicaColors.white.withOpacity(0.2),
                   onPressed: (){
                     //router.Router.navigator.pushNamed(router.Router.forgetPassword)
                   },
-                  textStyle: UbikStyles().stylePrimary(size: sizeH * 0.020,),
+                  textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.018,enumStyle: EnumStyle.regular),
                   height: sizeH * 0.05,
                 ),
               ],
@@ -155,16 +157,15 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[
           Text(
             'Iniciar Sesión',
-            style: UbikStyles().stylePrimary(size: sizeH * 0.023, color: UbicaColors.primary),
+            style: UbicaStyles().stylePrimary(size: sizeH * 0.023, color: UbicaColors.primary,enumStyle: EnumStyle.semiBold),
           ),
           SizedBox( height: sizeH * 0.03),
           TextFieldGeneral(
             sizeW: sizeW,
             sizeH: sizeH,
             sizeHeight: sizeH * 0.05,
-            placeHolder: 'Correo',
-            labelStyle:
-                TextStyle(color: UbicaColors.black, fontSize: sizeH * 0.02),
+            hintText: 'Correo',
+            labelStyle: UbicaStyles().stylePrimary(color: UbicaColors.black, size: sizeH * 0.018),
             textInputType: TextInputType.emailAddress,
             onChanged: (email){
               //context.bloc<LoginBloc>()..add(LoginEvent.emailChanged(email))
@@ -177,9 +178,10 @@ class _LoginPageState extends State<LoginPage> {
             sizeW: sizeW,
             sizeH: sizeH,
             sizeHeight: sizeH * 0.05,
-            placeHolder: 'Contraseña',
-            labelStyle: TextStyle(color: UbicaColors.black, fontSize: sizeH * 0.02),
+            hintText: 'Contraseña',
+            labelStyle: UbicaStyles().stylePrimary(color: UbicaColors.black, size: sizeH * 0.018),
             obscure: true,
+            textInputType: TextInputType.visiblePassword,
             onChanged: (pass){
               //context.bloc<LoginBloc>()..add(LoginEvent.passwordChanged(pass))
             },
@@ -199,15 +201,16 @@ class _LoginPageState extends State<LoginPage> {
           //       )
           //     :
           ButtonGeneral(
-            title: 'INICIAR SESIÓN',
+            title: 'Entrar',
             onPressed: (){
               // FocusScope.of(context).requestFocus(new FocusNode());
               // context.bloc<LoginBloc>()..add(LoginEvent.loginWithCredentialsPressed());
             },
             backgroundColor: UbicaColors.primary,
             borderColor: UbicaColors.primary,
-            textStyle: UbikStyles().stylePrimary(size: sizeH * 0.017, color: UbicaColors.white,fontWeight: FontWeight.bold),
+            textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.018, color: UbicaColors.white,enumStyle: EnumStyle.semiBold),
             height: sizeH * 0.05,
+            width: sizeW * 0.8,
           ),
         ],
       ),
