@@ -1,53 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class TextFieldGeneral extends StatelessWidget {
-  final String? placeHolder;
-  final IconData? icon;
-  final bool obscure;
+class TextFieldGeneral extends StatefulWidget {
   final int maxLines;
+  final double radius;
+  final double sizeHeight;
+  final double sizeBorder;
+  final String? placeHolder;
+  final String? initialValue;
+  final String hintText;
+  final bool obscure;
+  final bool autoCorrect;
+  final bool autoValidate;
+  final bool enable;
+  final bool autofocus;
+  final bool activeErrorText;
+  final IconData? icon;
   final Color borderColor;
   final TextEditingController? textEditingController;
-  final bool autoCorrect;
-  final void Function(String)? onChanged;
   final TextInputType textInputType;
-  final bool autoValidate;
-  final String? initialValue;
-  final double sizeH;
-  final double sizeW;
   final FocusNode? focusNode;
-  final void Function()? onTap;
-  final void Function(String)? onFieldSubmitted;
-  final double sizeHeight;
   final TextAlign textAlign;
   final TextStyle labelStyle;
   final List<BoxShadow>? boxShadow;
-  final double sizeBorder;
-  final Widget? suffixIcon;
-  final Widget? prefixIcon;
-  final bool enable;
   final EdgeInsetsGeometry padding;
   final TextCapitalization textCapitalization;
-  final String hintText;
   final Color colorBack;
-  final bool autofocus;
   final TextInputAction? textInputAction;
   final BoxConstraints? constraints;
-  final double radius;
   final List<TextInputFormatter> inputFormatters;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final void Function(String)? onChanged;
+  final void Function()? onTap;
+  final void Function(String)? onFieldSubmitted;
+  final EdgeInsetsGeometry contentPadding;
 
   const TextFieldGeneral({
     Key? key,
-    required this.sizeH,
-    required this.sizeW,
-    this.initialValue = '',
+    this.initialValue,
     this.placeHolder,
     this.icon,
     this.borderColor = Colors.grey,
     this.textEditingController,
     this.onChanged,
     this.textInputType = TextInputType.name,
-    this.autoCorrect = false,
+    this.autoCorrect = true,
     this.obscure = false,
     this.autoValidate = false,
     this.maxLines = 1,
@@ -69,65 +67,76 @@ class TextFieldGeneral extends StatelessWidget {
     this.autofocus = false,
     this.textInputAction,
     this.constraints,
-    this.radius = 5.0,
+    this.radius = 10.0,
     this.inputFormatters = const [],
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+    this.activeErrorText = true,
   }) : super(key: key);
 
+  @override
+  State<TextFieldGeneral> createState() => _TextFieldGeneralState();
+}
 
-
+class _TextFieldGeneralState extends State<TextFieldGeneral> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: constraints != null ? null : sizeHeight == 0 ? (sizeH * 0.06) : sizeHeight,
-      padding: padding,
-      constraints: constraints,
+      padding: widget.padding,
+      constraints: widget.constraints,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        color: colorBack,
-        borderRadius: BorderRadius.all(Radius.circular(radius)),
+        color: widget.colorBack,
+        borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
         border: Border.all(
-          width: sizeBorder,
-          color: borderColor,
+          width: widget.sizeBorder,
+          color: widget.borderColor,
         ),
-        boxShadow: boxShadow,
+        boxShadow: widget.boxShadow,
       ),
       child: TextFormField(
-        onFieldSubmitted: onFieldSubmitted,
-        onTap: onTap,
-        style: labelStyle,
-        textAlign: textAlign,
-        initialValue: initialValue,
-        maxLines: maxLines,
-        obscureText: obscure,
-        enabled: enable,
-        controller: textEditingController,
-        onChanged: onChanged,
-        autocorrect: autoCorrect,
-        keyboardType: textInputType,
-        focusNode: focusNode,
-        textCapitalization: textCapitalization,
-        autofocus: autofocus,
-        textInputAction: textInputAction,
-        inputFormatters: inputFormatters,
+        controller: widget.textEditingController,
+        initialValue: widget.initialValue,
+        onFieldSubmitted: widget.onFieldSubmitted,
+        onTap: widget.onTap,
+        style: widget.labelStyle,
+        textAlign: widget.textAlign,
+        maxLines: widget.maxLines,
+        obscureText: widget.obscure,
+        enabled: widget.enable,
+        onChanged: widget.onChanged,
+        autocorrect: widget.autoCorrect,
+        keyboardType: widget.textInputType,
+        focusNode: widget.focusNode,
+        textCapitalization: widget.textCapitalization,
+        autofocus: widget.autofocus,
+        textInputAction: widget.textInputAction,
+        inputFormatters: widget.inputFormatters,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
-          filled: true,
-          fillColor: colorBack,
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(radius)),
-            borderSide: const BorderSide(width: 0.0,color: Colors.transparent,),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(radius)),
-            borderSide: const BorderSide(width: 0.0,color: Colors.transparent,),
-          ),
-          suffixIcon: suffixIcon,
-          labelText: placeHolder,
-          labelStyle: labelStyle,
-          errorStyle: labelStyle,
-          hintText: hintText,
-          hintStyle: labelStyle,
-          prefixIcon: prefixIcon,
-          contentPadding:EdgeInsets.symmetric(horizontal: sizeW * 0.01, vertical: sizeH * 0.001)
+            filled: true,
+            fillColor: widget.colorBack,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+              borderSide: const BorderSide(
+                width: 0.0,
+                color: Colors.transparent,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+              borderSide: const BorderSide(
+                width: 0.0,
+                color: Colors.transparent,
+              ),
+            ),
+            suffixIcon: widget.suffixIcon,
+            labelText: widget.placeHolder,
+            labelStyle: widget.labelStyle,
+            errorStyle: widget.labelStyle,
+            hintText: widget.hintText,
+            hintStyle: widget.labelStyle,
+            prefixIcon: widget.prefixIcon,
+            contentPadding: widget.contentPadding
         ),
       ),
     );

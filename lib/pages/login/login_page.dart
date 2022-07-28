@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
+import 'package:ubik/pages/register/register_page.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
 import 'package:ubik/widgets_utils/textfield_general.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
@@ -119,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                 ButtonGeneral(
                   title: 'Registrarme',
                   onPressed: (){
-                    //router.Router.navigator.pushNamed(router.Router.registerPage)
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context2) => const RegisterPage()));
                   },
                   backgroundColor: UbicaColors.white,
                   textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.018,enumStyle: EnumStyle.regular),
@@ -161,8 +162,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
           SizedBox( height: sizeH * 0.03),
           TextFieldGeneral(
-            sizeW: sizeW,
-            sizeH: sizeH,
             sizeHeight: sizeH * 0.05,
             hintText: 'Correo',
             labelStyle: UbicaStyles().stylePrimary(color: UbicaColors.black, size: sizeH * 0.018),
@@ -175,8 +174,6 @@ class _LoginPageState extends State<LoginPage> {
             height: sizeH * 0.022,
           ),
           TextFieldGeneral(
-            sizeW: sizeW,
-            sizeH: sizeH,
             sizeHeight: sizeH * 0.05,
             hintText: 'Contraseña',
             labelStyle: UbicaStyles().stylePrimary(color: UbicaColors.black, size: sizeH * 0.018),

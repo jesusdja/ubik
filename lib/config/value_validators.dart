@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
-
-Map<String, dynamic> validateUserAddress(String input,BuildContext context) {
+Map<String, dynamic> validateUserAddress({required String input}) {
 
   Map<String, dynamic> result = {'valid' : false, 'sms' : 'No es valido.'};
   const emailRegex = r"""^[a-zA-Z]+""";
@@ -28,7 +26,7 @@ Map<String, dynamic> validateUserAddress(String input,BuildContext context) {
   }
 }
 
-Map<String, dynamic> validateEmailAddress({required String email, required BuildContext context}) {
+Map<String, dynamic> validateEmailAddress({required String email}) {
   Map<String, dynamic> result = {'valid' : false, 'sms' : 'No es valido.'};
   const emailRegex =
   r"""^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+\.[a-zA-Z]+""";
@@ -43,8 +41,7 @@ Map<String, dynamic> validateEmailAddress({required String email, required Build
   }
 }
 
-
-Map<String, dynamic> validatePassword(String input,BuildContext context) {
+Map<String, dynamic> validatePassword({required String input}) {
   Map<String, dynamic> result = {'valid' : false, 'sms' : 'No es valido.'};
   // String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$';
   String oneNumber = r'^.*[0-9].*$';
