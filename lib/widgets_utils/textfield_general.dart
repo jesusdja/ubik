@@ -67,7 +67,7 @@ class TextFieldGeneral extends StatefulWidget {
     this.autofocus = false,
     this.textInputAction,
     this.constraints,
-    this.radius = 10.0,
+    this.radius = 5.0,
     this.inputFormatters = const [],
     this.contentPadding = const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
     this.activeErrorText = true,

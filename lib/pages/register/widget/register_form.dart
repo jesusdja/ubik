@@ -3,9 +3,11 @@ import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/config/value_validators.dart';
 import 'package:ubik/main.dart';
+import 'package:ubik/services/authenticate_firebase.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
 import 'package:ubik/widgets_utils/textfield_general.dart';
+import 'package:ubik/widgets_utils/toast_widget.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key? key}) : super(key: key);
@@ -18,7 +20,6 @@ class _RegisterFormState extends State<RegisterForm> {
 
   FocusNode focusNodeUser = FocusNode();
   FocusNode focusNodeName = FocusNode();
-  FocusNode focusNodeLastName = FocusNode();
   FocusNode focusNodeEmail = FocusNode();
   FocusNode focusNodePass = FocusNode();
   FocusNode focusNodePass2 = FocusNode();
@@ -26,7 +27,6 @@ class _RegisterFormState extends State<RegisterForm> {
   bool isLoad = false;
 
   TextEditingController controllerName = TextEditingController();
-  TextEditingController controllerLastName = TextEditingController();
   TextEditingController controllerEmailAddress = TextEditingController();
   TextEditingController controllerPassword = TextEditingController();
   TextEditingController controllerPassword2 = TextEditingController();
@@ -36,7 +36,6 @@ class _RegisterFormState extends State<RegisterForm> {
     super.dispose();
     focusNodeUser.dispose();
     focusNodeName.dispose();
-    focusNodeLastName.dispose();
     focusNodeEmail.dispose();
     focusNodePass.dispose();
     focusNodePass2.dispose();
@@ -44,9 +43,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
-    validateForm();
     Widget space = SizedBox(height: sizeH * 0.02,);
-
     return Container(
       width: sizeW,
       margin: EdgeInsets.only(left: sizeW * 0.1, right: sizeW * 0.1),
@@ -66,23 +63,11 @@ class _RegisterFormState extends State<RegisterForm> {
                 textEditingController: controllerName,
                 focusNode: focusNodeName,
                 sizeHeight: sizeH * 0.05,
-                hintText: 'Nombre',
+                hintText: 'Nombre y apellido',
                 labelStyle: TextStyle(color: UbicaColors.black, fontSize: sizeH * 0.02),
               ),
             ),
-            controllerName.text.isEmpty && showError ? _error('Nombre requerido.') : Container(),
-            space,
-            SizedBox(
-              width: sizeW,
-              child: TextFieldGeneral(
-                focusNode: focusNodeLastName,
-                textEditingController: controllerLastName,
-                sizeHeight: sizeH * 0.05,
-                hintText: 'Apellido',
-                labelStyle: TextStyle(color: UbicaColors.black, fontSize: sizeH * 0.02),
-              ),
-            ),
-            controllerLastName.text.isEmpty && showError? _error('Apellido requerido.') : Container(),
+            controllerName.text.isEmpty && showError ? _error('Nombre y apellido requerido.') : Container(),
             space,
             SizedBox(
               width: sizeW,
@@ -124,9 +109,9 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
             ),
             showError && controllerPassword.text != controllerPassword2.text ? _error('Las contraseñas deben ser iguales.') : Container(),
-            space,
+            space,space,space,space,
             isLoad ?
-            Center(child: circularProgressColors(colorCircular: UbicaColors.primary,widthContainer1: sizeW,widthContainer2: sizeW * 0.03))
+            Center(child: circularProgressColors(colorCircular: UbicaColors.primary,widthContainer1: sizeW,widthContainer2: sizeW * 0.08))
                 :
             SizedBox(
               width: sizeW,
@@ -135,12 +120,8 @@ class _RegisterFormState extends State<RegisterForm> {
                 backgroundColor: UbicaColors.primary,
                 borderColor: UbicaColors.primary,
                 textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.017, color: UbicaColors.white,enumStyle: EnumStyle.semiBold),
-                height: sizeH * 0.05,
-                onPressed: (){
-                  //context.bloc<RegisterBloc>()..add(RegisterEvent.registerPressed())
-                  showError = true;
-                  setState(() {});
-                },
+                height: sizeH * 0.06,
+                onPressed: () => saveUser(),
               ),
             ),
             space,
@@ -150,29 +131,58 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  validateForm(){
-    Map<String, FocusNode> mapError = {};
+  Future saveUser() async{
 
-    if (showError && controllerName.text.isEmpty && mapError.isEmpty) {
+    isLoad = true;
+    setState(() {});
+
+    FocusScope.of(context).requestFocus(FocusNode());
+    showError = validateForm();
+
+    if(!showError){
+      try{
+        Map<String,dynamic> data = await AuthenticateFirebaseUser().registerFirebase(
+            email: controllerEmailAddress.text, password: controllerPassword.text,alias: controllerName.text);
+        if(data.containsKey('user')){
+          showAlert(text: 'Bienvenido');
+          Navigator.of(context).pop(true);
+        }else{
+          String error = data.containsKey('error') ? data['error'] : 'Problemas de conexión con el servidor';
+          showAlert(text: error,isError: true);
+        }
+
+      }catch(e){
+        showError = true;
+        showAlert(text: 'Error de conexión con el servidor',isError: true);
+      }
+    }
+
+    isLoad = false;
+    setState(() {});
+  }
+
+  bool validateForm(){
+    Map<String, FocusNode> mapError = {};
+    bool error = false;
+
+    if (controllerName.text.isEmpty && mapError.isEmpty) {
       mapError['error'] = focusNodeName;
     }
-    if (showError && controllerLastName.text.isEmpty && mapError.isEmpty) {
-      mapError['error'] = focusNodeLastName;
-    }
-    if (showError && !validateEmailAddress(email: controllerEmailAddress.text)['valid'] && mapError.isEmpty) {
+    if (!validateEmailAddress(email: controllerEmailAddress.text)['valid'] && mapError.isEmpty) {
       mapError['error'] = focusNodeEmail;
     }
-    if (showError && !validatePassword(input: controllerPassword.text)['valid'] && mapError.isEmpty) {
+    if (!validatePassword(input: controllerPassword.text)['valid'] && mapError.isEmpty) {
       mapError['error'] = focusNodePass;
     }
-    if (showError && controllerPassword.text != controllerPassword2.text && mapError.isEmpty) {
+    if (controllerPassword.text != controllerPassword2.text && mapError.isEmpty) {
       mapError['error'] = focusNodePass2;
     }
     if (mapError.isNotEmpty) {
       mapError['error']!.requestFocus();
       mapError.remove('error');
-      showError = true;
+      error = true;
     }
+    return error;
   }
 
   Widget _error(String text) {

@@ -20,6 +20,12 @@ dependencies:
   provider: ^6.0.2
   shared_preferences: ^2.0.15
 
+  #FIREBASE
+  firebase_core: ^1.19.2
+  firebase_storage: ^10.3.2
+  firebase_auth: ^3.3.18
+  cloud_firestore: ^3.1.0
+
   #IMAGE
   image_picker: ^0.8.5+3
   image_cropper: ^2.0.3

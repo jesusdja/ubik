@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
+import 'package:ubik/pages/home/home_page.dart';
 import 'package:ubik/pages/register/register_page.dart';
+import 'package:ubik/services/authenticate_firebase.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
+import 'package:ubik/widgets_utils/circular_progress_colors.dart';
 import 'package:ubik/widgets_utils/textfield_general.dart';
+import 'package:ubik/widgets_utils/toast_widget.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,6 +19,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  bool loadLogin = false;
+  TextEditingController controllerEmail = TextEditingController();
+  TextEditingController controllerPass = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,8 +128,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 ButtonGeneral(
                   title: 'Registrarme',
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context2) => const RegisterPage()));
+                  onPressed: () async {
+                    bool? result = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context2) => const RegisterPage()));
+                    if(result != null && result){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context2) => const HomePage()));
+                    }
                   },
                   backgroundColor: UbicaColors.white,
                   textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.018,enumStyle: EnumStyle.regular),
@@ -162,18 +174,17 @@ class _LoginPageState extends State<LoginPage> {
           ),
           SizedBox( height: sizeH * 0.03),
           TextFieldGeneral(
+            textEditingController: controllerEmail,
             sizeHeight: sizeH * 0.05,
             hintText: 'Correo',
             labelStyle: UbicaStyles().stylePrimary(color: UbicaColors.black, size: sizeH * 0.018),
             textInputType: TextInputType.emailAddress,
-            onChanged: (email){
-              //context.bloc<LoginBloc>()..add(LoginEvent.emailChanged(email))
-            },
           ),
           SizedBox(
             height: sizeH * 0.022,
           ),
           TextFieldGeneral(
+            textEditingController: controllerPass,
             sizeHeight: sizeH * 0.05,
             hintText: 'Contraseña',
             labelStyle: UbicaStyles().stylePrimary(color: UbicaColors.black, size: sizeH * 0.018),
@@ -186,23 +197,11 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: sizeH * 0.022,
           ),
-          // state.isSubmitting
-          //     ? Center(
-          //         child: Container(
-          //           width: sizeH * 0.05,
-          //           height: sizeH * 0.05,
-          //           child: CircularProgressIndicator(
-          //             backgroundColor: UbicaColors.primary,
-          //           ),
-          //         ),
-          //       )
-          //     :
+          loadLogin ? Center(child: circularProgressColors(colorCircular: UbicaColors.primary,widthContainer1: sizeW,widthContainer2: sizeW * 0.06))
+              :
           ButtonGeneral(
             title: 'Entrar',
-            onPressed: (){
-              // FocusScope.of(context).requestFocus(new FocusNode());
-              // context.bloc<LoginBloc>()..add(LoginEvent.loginWithCredentialsPressed());
-            },
+            onPressed: ()=> saveUser(),
             backgroundColor: UbicaColors.primary,
             borderColor: UbicaColors.primary,
             textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.018, color: UbicaColors.white,enumStyle: EnumStyle.semiBold),
@@ -212,5 +211,40 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  Future saveUser() async{
+    loadLogin = true;
+    setState(() {});
+
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    String errorText = '';
+    if(errorText.isEmpty && controllerEmail.text.isEmpty){
+      errorText = 'Correo no puede estar vacio';
+    }
+
+    if(errorText.isEmpty && controllerPass.text.isEmpty){
+      errorText = 'Contraseña no puede estar vacio';
+    }
+
+    if(errorText.isEmpty){
+      try{
+        Map<String,dynamic> data = await AuthenticateFirebaseUser().signInFirebase(email: controllerEmail.text, password: controllerPass.text);
+        if(data.containsKey('user')){
+          showAlert(text: 'Bienvenido');
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context2) => const HomePage()));
+        }else{
+          String error = data.containsKey('error') ? data['error'] : 'Problmas de conexión con el servidor';
+          showAlert(text: error, isError: true);
+        }
+      }catch(e){
+        showAlert(text: 'Error: ${e.toString()}', isError: true);
+      }
+    }else{
+      showAlert(text: errorText, isError: true);
+    }
+    loadLogin = false;
+    setState(() {});
   }
 }
