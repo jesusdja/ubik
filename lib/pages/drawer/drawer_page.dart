@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
+import 'package:ubik/pages/drawer/widgets/drawer_1_about.dart';
 import 'package:ubik/providers/user_provider.dart';
+import 'package:ubik/widgets_utils/appbar_widgets.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
 import 'package:ubik/widgets_utils/dialog_alert.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
@@ -28,7 +30,7 @@ class _DrawerPageState extends State<DrawerPage> {
       child: Scaffold(
         backgroundColor: UbicaColors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(sizeH * 0.08),
+          preferredSize: Size.fromHeight(sizeH * 0.07),
           child: appBar(),
         ),
         body: Stack(
@@ -88,7 +90,7 @@ class _DrawerPageState extends State<DrawerPage> {
           _rowButton(iconName: 'icon_acerca_de.png',textTop: 'Acerca de "Ubi-K"',onTap: (){
             showUbicaDialog(
               context: context,
-              child: Container(),//showMenuAbout(context),
+              child: showMenuAbout(context: context),
             );
           }),
           space,
@@ -153,22 +155,12 @@ class _DrawerPageState extends State<DrawerPage> {
   }
 
   Widget appBar(){
-    return AppBar(
-      backgroundColor: UbicaColors.white,
-      title: Text('Usuario',style: UbicaStyles().stylePrimary(size: sizeH * 0.025, color: UbicaColors.primary,enumStyle: EnumStyle.regular),),
-      elevation: 10.0,
-      leading: InkWell(
-        onTap: () => Navigator.of(context).pop(),
-        child: Container(
-          margin: EdgeInsets.all(sizeH * 0.01),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: ViewImage().assetsImage('assets/image/icon_back_app-orange.png').image,
-              fit: BoxFit.fill,
-            ),
-          ),
-        ),
-      ),
+    return appBarIcon(
+        backgroundColor: UbicaColors.white,
+        styleTitle: UbicaStyles().stylePrimary(size: sizeH * 0.025, color: UbicaColors.primary,enumStyle: EnumStyle.regular),
+        title: 'Usuario',
+        elevation: 10.0,
+        context: context
     );
   }
 }
