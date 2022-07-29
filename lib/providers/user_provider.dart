@@ -24,8 +24,9 @@ class UserProvider extends ChangeNotifier {
     });
   }
 
-  void changeSelectedBottomHome({required int type}){
-    selectedBottomHome = type;
+  Future refreshUser() async{
+    userFirebase = FirebaseAuth.instance.currentUser;
     notifyListeners();
   }
+
 }

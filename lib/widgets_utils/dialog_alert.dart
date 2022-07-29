@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 
-Future<bool> alertClosetSession(BuildContext context) async{
+Future<bool?> alertClosetSession(BuildContext context) async{
   Size size = MediaQuery.of(context).size;
   bool res = await showDialog(
       context: context,
@@ -14,7 +14,7 @@ Future<bool> alertClosetSession(BuildContext context) async{
             style: UbicaStyles().stylePrimary(size: size.height * 0.025, color: UbicaColors.primary),),
           actions: <Widget>[
             CupertinoButton(
-              child: Text('Ok',
+              child: Text('SI',
                 style: UbicaStyles().stylePrimary(size: size.height * 0.02, color: UbicaColors.primary,fontWeight: FontWeight.bold),),
               onPressed: ()  {
                 Navigator.of(context).pop(true);
@@ -22,7 +22,7 @@ Future<bool> alertClosetSession(BuildContext context) async{
             ),
             SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
             CupertinoButton(
-              child: Text('Cancelar',
+              child: Text('NO',
                 style: UbicaStyles().stylePrimary(size: size.height * 0.02, color: UbicaColors.primary,fontWeight: FontWeight.bold),),
               onPressed: (){
                 Navigator.of(context).pop(false);

@@ -35,6 +35,7 @@ class TextFieldGeneral extends StatefulWidget {
   final void Function()? onTap;
   final void Function(String)? onFieldSubmitted;
   final EdgeInsetsGeometry contentPadding;
+  final BoxConstraints? suffixIconConstraints;
 
   const TextFieldGeneral({
     Key? key,
@@ -71,6 +72,7 @@ class TextFieldGeneral extends StatefulWidget {
     this.inputFormatters = const [],
     this.contentPadding = const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
     this.activeErrorText = true,
+    this.suffixIconConstraints,
   }) : super(key: key);
 
   @override
@@ -136,6 +138,7 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
             hintText: widget.hintText,
             hintStyle: widget.labelStyle,
             prefixIcon: widget.prefixIcon,
+            suffixIconConstraints: widget.suffixIconConstraints,
             contentPadding: widget.contentPadding
         ),
       ),

@@ -73,4 +73,20 @@ class AuthenticateFirebaseUser{
     return data;
   }
 
+  Future<Map<String,dynamic>> editFirebaseUser({required User userCredential, String name = '', String pass = '', String pass2 = ''})async{
+    Map<String,dynamic> data = {};
+    try{
+      if(name.isNotEmpty){
+        await userCredential.updateDisplayName(name);
+      }
+      if(pass.isNotEmpty && pass2.isNotEmpty && pass != pass2){
+        await userCredential.updatePassword(pass2);
+      }
+    } on FirebaseAuthException catch (e){
+      debugPrint(e.toString());
+      data['error'] = e.code;
+    }
+    return data;
+  }
+
 }

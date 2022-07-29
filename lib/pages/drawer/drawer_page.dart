@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
+import 'package:ubik/initial_page.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/pages/drawer/widgets/drawer_1_about.dart';
+import 'package:ubik/pages/drawer/widgets/drawer_2_update_profile.dart';
 import 'package:ubik/providers/user_provider.dart';
+import 'package:ubik/services/finish_app.dart';
 import 'package:ubik/widgets_utils/appbar_widgets.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
 import 'package:ubik/widgets_utils/dialog_alert.dart';
@@ -68,7 +71,6 @@ class _DrawerPageState extends State<DrawerPage> {
       correo = userProvider.userFirebase!.email ?? '';
     }
 
-
     Widget space = Divider(
       height: sizeH * 0.03,
       endIndent: sizeW * 0.03,
@@ -84,7 +86,7 @@ class _DrawerPageState extends State<DrawerPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           _rowButton(iconName:'icon_mis_datos_de_usuario.png',textTop: name,
-              onTap: (){},
+              onTap: null,
               textBottom: correo),
           space,
           _rowButton(iconName: 'icon_acerca_de.png',textTop: 'Acerca de "Ubi-K"',onTap: (){
@@ -95,23 +97,22 @@ class _DrawerPageState extends State<DrawerPage> {
           }),
           space,
           _rowButton(iconName: 'icon_mi_cuenta.png',textTop: 'Mi Cuenta',onTap: () async {
-            // var result = await router.Router.navigator.pushNamed(router.Router.menuUpdateProfile,
-            // arguments: router.MenuUpdateProfileArguments(
-            //   contextPage: context,
-            //   myUserRes: state.myUser,
-            // ));
-            // if(result){
-            //   context.bloc<MenuBloc>()..add(MenuEvent.dataInitial());
-            // }
+            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context2) => const DrawerUpdateProfile()));
           }),
           space,
           _rowButton(iconName: 'icon_mis_servicios.png',textTop: 'Mis Servicios', onTap: (){
             //router.Router.navigator.pushNamed(router.Router.menuMeServices);
           }),
           space,
-          _rowButton(iconName: 'icon_salir_app.png',textTop: 'Salir',onTap: (){
+          _rowButton(iconName: 'icon_salir_app.png',textTop: 'Salir',onTap: () async {
             // AuthBloc(AuthRepository()).add(AuthEvent.signedOut());
             // router.Router.navigator.pushReplacementNamed(router.Router.login);
+
+            bool? res = await alertClosetSession(context);
+            if(res != null && res){
+              await finishApp();
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context2) => const InitialPage()));
+            }
           }),
           space,
         ],
@@ -119,7 +120,7 @@ class _DrawerPageState extends State<DrawerPage> {
     );
   }
 
-  Widget _rowButton({required String iconName, required String textTop, required Function() onTap, String textBottom = ''}){
+  Widget _rowButton({required String iconName, required String textTop, required Function()? onTap, String textBottom = ''}){
     return InkWell(
       onTap: onTap,
       child: SizedBox(
