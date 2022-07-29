@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
+import 'package:ubik/pages/drawer/drawer_page.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,10 +13,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: UbicaColors.primary,
+      endDrawer: const DrawerPage(),
       body: Stack(
         children: [
           topContainer(),
@@ -213,13 +219,18 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         children: [
           onTapContainer(url: 'iconshopping.png', title: 'Afíliate', select: false,
-            onTap: (){},// => router.Router.navigator.pushNamed(router.Router.affiliatePage)),
+            onTap: (){
+
+            },// => router.Router.navigator.pushNamed(router.Router.affiliatePage)),
           ),
           onTapContainer(url: 'iconHome.png', title: 'Inicio', select: true,
             onTap: (){}
           ),
           onTapContainer(url: 'iconperson.png', title: 'Usuario', select: false,
-            onTap: (){},// => router.Router.navigator.pushNamed(router.Router.menuPage),
+            onTap: (){
+              _scaffoldKey.currentState!.openEndDrawer();
+              //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context2) => const DrawerPage()));
+            },// => router.Router.navigator.pushNamed(router.Router.menuPage),
           ),
         ],
       ),

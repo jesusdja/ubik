@@ -66,3 +66,40 @@ Future<bool?> alertDeleteVideo(BuildContext context) async{
   );
   return res;
 }
+
+void showUbicaDialog({ required BuildContext context, required Widget child,}) {
+  showGeneralDialog<dynamic>(
+    context: context,
+    pageBuilder: (
+        BuildContext buildContext,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        ) {
+      return SafeArea(
+        child: Scaffold(
+          backgroundColor: UbicaColors.black.withOpacity(0.05),
+          body: Builder(
+            builder: (BuildContext context) => child,
+          ),
+        ),
+      );
+    },
+    barrierDismissible: true,
+    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    barrierColor: UbicaColors.black.withOpacity(0.6),
+    transitionDuration: const Duration(milliseconds: 150),
+    useRootNavigator: true,
+    transitionBuilder: _buildMaterialDialogTransitions,
+  );
+}
+
+Widget _buildMaterialDialogTransitions(
+    BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+  return FadeTransition(
+    opacity: CurvedAnimation(
+      parent: animation,
+      curve: Curves.easeOut,
+    ),
+    child: child,
+  );
+}
