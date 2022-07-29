@@ -3,6 +3,7 @@ import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/pages/home/home_page.dart';
+import 'package:ubik/pages/login/forget_password.dart';
 import 'package:ubik/pages/register/register_page.dart';
 import 'package:ubik/services/authenticate_firebase.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
@@ -147,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                   title: 'Olvidé mi contraseña',
                   backgroundColor: UbicaColors.white.withOpacity(0.2),
                   onPressed: (){
-                    //router.Router.navigator.pushNamed(router.Router.forgetPassword)
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context2) => ForgetPassword(emailLogin: controllerEmail.text,)));
                   },
                   textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.018,enumStyle: EnumStyle.regular),
                   height: sizeH * 0.05,
@@ -190,9 +191,6 @@ class _LoginPageState extends State<LoginPage> {
             labelStyle: UbicaStyles().stylePrimary(color: UbicaColors.black, size: sizeH * 0.018),
             obscure: true,
             textInputType: TextInputType.visiblePassword,
-            onChanged: (pass){
-              //context.bloc<LoginBloc>()..add(LoginEvent.passwordChanged(pass))
-            },
           ),
           SizedBox(
             height: sizeH * 0.022,
