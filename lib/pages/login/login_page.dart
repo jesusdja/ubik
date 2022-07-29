@@ -180,6 +180,7 @@ class _LoginPageState extends State<LoginPage> {
             hintText: 'Correo',
             labelStyle: UbicaStyles().stylePrimary(color: UbicaColors.black, size: sizeH * 0.018),
             textInputType: TextInputType.emailAddress,
+            textCapitalization: TextCapitalization.none,
           ),
           SizedBox(
             height: sizeH * 0.022,

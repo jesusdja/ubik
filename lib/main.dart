@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ubik/initial_page.dart';
 import 'package:ubik/providers/auth_provider.dart';
+import 'package:ubik/providers/user_provider.dart';
 import 'package:ubik/services/sharedprefereces.dart';
 
 double sizeH = 0;
@@ -25,6 +26,7 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(lazy: false,create: ( _ ) => AuthProvider()),
+        ChangeNotifierProvider(lazy: false,create: ( _ ) => UserProvider()),
       ],
       child: const MyApp(),
     );
