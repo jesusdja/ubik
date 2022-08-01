@@ -10,6 +10,8 @@ class UserProvider extends ChangeNotifier {
   int selectedBottomHome = 1;
   List<String>? listVideos = [];
 
+  bool isPageAffiliate = false;
+
   UserProvider() {
     userActive();
   }
@@ -26,6 +28,11 @@ class UserProvider extends ChangeNotifier {
 
   Future refreshUser() async{
     userFirebase = FirebaseAuth.instance.currentUser;
+    notifyListeners();
+  }
+
+  void changePageAffiliate({required bool value}){
+    isPageAffiliate = value;
     notifyListeners();
   }
 

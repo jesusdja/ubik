@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
+import 'package:ubik/pages/afiliate/affiliate_page.dart';
 import 'package:ubik/pages/drawer/drawer_page.dart';
+import 'package:ubik/providers/home_provider.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,9 +18,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  late HomeProvider homeProvider;
 
   @override
   Widget build(BuildContext context) {
+
+    homeProvider = Provider.of<HomeProvider>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: UbicaColors.primary,
@@ -25,7 +32,8 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           topContainer(),
-          _pageHome(),
+          homeProvider.isPageAffiliate ?
+          const AffiliatePage() : _pageHome(),
           Align(
             alignment: Alignment.bottomCenter,
             child: bottomNavigationBar(),
@@ -218,19 +226,20 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Row(
         children: [
-          onTapContainer(url: 'iconshopping.png', title: 'Afíliate', select: false,
+          onTapContainer(url: homeProvider.isPageAffiliate ? 'cart-orange.png' : 'iconshopping.png', title: 'Afíliate', select: homeProvider.isPageAffiliate,
             onTap: (){
-
-            },// => router.Router.navigator.pushNamed(router.Router.affiliatePage)),
+              homeProvider.changePageAffiliate(value: true);
+            },
           ),
-          onTapContainer(url: 'iconHome.png', title: 'Inicio', select: true,
-            onTap: (){}
+          onTapContainer(url: homeProvider.isPageAffiliate ? 'u-grey.png' : 'iconHome.png', title: 'Inicio', select: !homeProvider.isPageAffiliate,
+            onTap: (){
+              homeProvider.changePageAffiliate(value: false);
+            }
           ),
           onTapContainer(url: 'iconperson.png', title: 'Usuario', select: false,
             onTap: (){
               _scaffoldKey.currentState!.openEndDrawer();
-              //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context2) => const DrawerPage()));
-            },// => router.Router.navigator.pushNamed(router.Router.menuPage),
+            },
           ),
         ],
       ),
