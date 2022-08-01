@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
+import 'package:ubik/pages/afiliate/widgets/data_user.dart';
 import 'package:ubik/providers/home_provider.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
@@ -144,12 +145,7 @@ class _AffiliatePageState extends State<AffiliatePage> {
     Widget element = Container();
 
     if(face == 0){
-      // element = DataUserAffiliate(
-      //   photos: state.photos,
-      //   name: state.name,
-      //   prePhone: state.prefPhone,
-      //   phone: state.phone,
-      // );
+      element = const DataUserAffiliate();
     }
     if(face == 1){
       //element = DialogShowMap();

@@ -12,7 +12,7 @@ class ViewImage {
     return image;
   }
 
-  Future<File> croppedImageView({required String imageFilepath, CropStyle cropStyle = CropStyle.rectangle}) async {
+  Future<File?> croppedImageView({required String imageFilepath, CropStyle cropStyle = CropStyle.rectangle}) async {
     CroppedFile? croppedImage = await ImageCropper.platform.cropImage(
       sourcePath: imageFilepath,
       cropStyle: cropStyle,

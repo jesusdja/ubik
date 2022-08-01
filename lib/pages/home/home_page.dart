@@ -5,6 +5,7 @@ import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/pages/afiliate/affiliate_page.dart';
 import 'package:ubik/pages/drawer/drawer_page.dart';
+import 'package:ubik/providers/affiliate_user_provider.dart';
 import 'package:ubik/providers/home_provider.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
@@ -228,6 +229,8 @@ class _HomePageState extends State<HomePage> {
         children: [
           onTapContainer(url: homeProvider.isPageAffiliate ? 'cart-orange.png' : 'iconshopping.png', title: 'Afíliate', select: homeProvider.isPageAffiliate,
             onTap: (){
+              final affiliateUserProvider = Provider.of<AffiliateUserProvider>(context, listen: false);
+              affiliateUserProvider.dataInitial();
               homeProvider.changePageAffiliate(value: true);
             },
           ),
