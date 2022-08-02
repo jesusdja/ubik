@@ -30,6 +30,10 @@ dependencies:
   image_picker: ^0.8.5+3
   image_cropper: ^2.0.3
 
+  #MAPS
+  google_maps_flutter: ^2.1.10
+  location: ^4.4.0
+
   #UTILS
   fluttertoast: ^8.0.7
 

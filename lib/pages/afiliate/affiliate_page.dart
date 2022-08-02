@@ -4,6 +4,8 @@ import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/pages/afiliate/widgets/data_user.dart';
+import 'package:ubik/pages/afiliate/widgets/dialog_show_map.dart';
+import 'package:ubik/providers/affiliate_user_provider.dart';
 import 'package:ubik/providers/home_provider.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
@@ -18,13 +20,14 @@ class _AffiliatePageState extends State<AffiliatePage> {
 
   bool isLoad = false;
   bool isCheck = false;
-  int face = 0;
   late HomeProvider homeProvider;
+  late AffiliateUserProvider affiliateUserProvider;
 
   @override
   Widget build(BuildContext context) {
 
     homeProvider = Provider.of<HomeProvider>(context);
+    affiliateUserProvider = Provider.of<AffiliateUserProvider>(context);
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -65,10 +68,10 @@ class _AffiliatePageState extends State<AffiliatePage> {
               children: [
                 InkWell(
                   onTap: (){
-                    if(face == 0 || face == 3){
+                    if(affiliateUserProvider.pageAffiliate == 0 || affiliateUserProvider.pageAffiliate == 3){
                       homeProvider.changePageAffiliate(value: false);
                     }else{
-                      face--;
+                      affiliateUserProvider.changePage(value: affiliateUserProvider.pageAffiliate - 1);
                       setState(() {});
                     }
                   },
@@ -132,7 +135,7 @@ class _AffiliatePageState extends State<AffiliatePage> {
           children: [
             const CircularProgressIndicator(),
             SizedBox(height: sizeH * 0.01,),
-            Text(face == 2 ? 'Afiliando usuario' : 'Verificando usuario',style: UbicaStyles().stylePrimary(size:sizeH * 0.025,enumStyle: EnumStyle.semiBold)),
+            Text(affiliateUserProvider.pageAffiliate == 2 ? 'Afiliando usuario' : 'Verificando usuario',style: UbicaStyles().stylePrimary(size:sizeH * 0.025,enumStyle: EnumStyle.semiBold)),
             SizedBox(height: sizeH * 0.5,)
           ],
         ),
@@ -144,13 +147,13 @@ class _AffiliatePageState extends State<AffiliatePage> {
   Widget affiliateUser(){
     Widget element = Container();
 
-    if(face == 0){
+    if(affiliateUserProvider.pageAffiliate == 0){
       element = const DataUserAffiliate();
     }
-    if(face == 1){
-      //element = DialogShowMap();
+    if(affiliateUserProvider.pageAffiliate == 1){
+      element = const DialogShowMap();
     }
-    if(face == 2 || face == 3){
+    if(affiliateUserProvider.pageAffiliate == 2 || affiliateUserProvider.pageAffiliate == 3){
       //element = SendData();
     }
 

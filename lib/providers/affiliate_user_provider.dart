@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class AffiliateUserProvider extends ChangeNotifier {
 
+  int pageAffiliate = 0;
+
   List<String> photos = ['','','','',];
   String name = '';
   String prePhone = '';
@@ -12,10 +14,12 @@ class AffiliateUserProvider extends ChangeNotifier {
     name = '';
     prePhone = '';
     phone = '';
+    pageAffiliate = 0;
   }
 
   void changeName({required String value}){ name = value; notifyListeners(); }
   void changePrePhone({required String value}){ prePhone = value; notifyListeners(); }
   void changePhone({required String value}){ phone = value; notifyListeners(); }
   void changePhotos({required List<String> value}){ photos = value; notifyListeners(); }
+  void changePage({required int value}){ pageAffiliate = value; notifyListeners(); }
 }

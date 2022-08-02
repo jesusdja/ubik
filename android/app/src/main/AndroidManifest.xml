@@ -13,6 +13,9 @@
            android:screenOrientation="portrait"
            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyB7Qa4w4Y44p9MTyDsbnG_U3BCZo4Z53lM"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

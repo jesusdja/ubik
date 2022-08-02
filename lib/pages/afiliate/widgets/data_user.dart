@@ -12,6 +12,7 @@ import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/dropdown_button_generic.dart';
 import 'package:ubik/widgets_utils/gallery_camera_dialog.dart';
 import 'package:ubik/widgets_utils/textfield_general.dart';
+import 'package:ubik/widgets_utils/toast_widget.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
 class DataUserAffiliate extends StatefulWidget {
@@ -281,20 +282,28 @@ class _DialogShowMapState extends State<DataUserAffiliate> {
         ),
       ),
       onTap: (){
-        // if(context.bloc<AffiliateBloc>().state.name.isNotEmpty){
-        //   if(context.bloc<AffiliateBloc>().state.prefPhone.isNotEmpty && context.bloc<AffiliateBloc>().state.phone.isNotEmpty){
-        //     if(photos[0].isNotEmpty){
-        //       context.bloc<AffiliateBloc>()..add(AffiliateEvent.updatePhoto(photos));
-        //       context.bloc<AffiliateBloc>()..add(AffiliateEvent.updateFace(1));
-        //     }else{
-        //       showError(context, 'Debe agregar al menos una foto.');
-        //     }
-        //   }else{
-        //     showError(context, 'Debe agregar un número de teléfono.');
-        //   }
-        // }else{
-        //   showError(context, 'Debe agregar un nombre.');
-        // }
+        FocusScope.of(context).requestFocus(FocusNode());
+
+        String errorText = '';
+        if(errorText.isEmpty && affiliateUserProvider.name.isEmpty){
+          errorText = 'Nombre no puede estar vacio';
+        }
+        if(errorText.isEmpty && (affiliateUserProvider.prePhone.isEmpty || affiliateUserProvider.phone.isEmpty)){
+          errorText = 'Teléfono no puede estar vacio';
+        }
+        if(errorText.isEmpty && affiliateUserProvider.photos[0].isEmpty){
+          errorText = 'Debe agregar la menos una foto';
+        }
+
+        if(errorText.isEmpty){
+          try{
+            affiliateUserProvider.changePage(value: 1);
+          }catch(e){
+            showAlert(text: 'Error: ${e.toString()}', isError: true);
+          }
+        }else{
+          showAlert(text: errorText, isError: true);
+        }
       },
     );
   }
