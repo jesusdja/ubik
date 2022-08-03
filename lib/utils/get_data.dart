@@ -1,3 +1,20 @@
+
+enum affiliateStatus {
+  wait,
+  processing,
+  accepted,
+  denied,
+  warned,
+}
+
+Map<affiliateStatus,String> mapStAffiliateStatus = {
+  affiliateStatus.wait : 'wait',
+  affiliateStatus.processing : 'processing',
+  affiliateStatus.accepted : 'accepted',
+  affiliateStatus.denied : 'denied',
+  affiliateStatus.warned : 'warned',
+};
+
 Map<String,List<String>> getDataCountries(){
   Map<String,List<String>> dataInfoCodigoMarcado = {};
   dataInfoCodigoMarcado[''] = ["","","","",""];

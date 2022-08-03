@@ -17,6 +17,16 @@ class AffiliateUserProvider extends ChangeNotifier {
     pageAffiliate = 0;
   }
 
+  Map<String,dynamic> toMap(){
+    return {
+      'placeSelect' : placeSelect,
+      'photos' : photos,
+      'name' : name,
+      'prePhone' : prePhone,
+      'phone' : phone,
+    };
+  }
+
   void changeName({required String value}){ name = value; notifyListeners(); }
   void changePrePhone({required String value}){ prePhone = value; notifyListeners(); }
   void changePhone({required String value}){ phone = value; notifyListeners(); }

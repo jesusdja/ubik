@@ -5,6 +5,7 @@ import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/pages/afiliate/widgets/data_user.dart';
 import 'package:ubik/pages/afiliate/widgets/dialog_show_map.dart';
+import 'package:ubik/pages/afiliate/widgets/send_data.dart';
 import 'package:ubik/providers/affiliate_user_provider.dart';
 import 'package:ubik/providers/home_provider.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
@@ -154,7 +155,7 @@ class _AffiliatePageState extends State<AffiliatePage> {
       element = const DialogShowMap();
     }
     if(affiliateUserProvider.pageAffiliate == 2 || affiliateUserProvider.pageAffiliate == 3){
-      //element = SendData();
+      element = const SendData();
     }
 
     return Container(

@@ -7,8 +7,10 @@ class HomeProvider extends ChangeNotifier {
   bool isPageAffiliate = false;
 
   void changePageAffiliate({required bool value}){
-    isPageAffiliate = value;
-    notifyListeners();
+    if(isPageAffiliate != value){
+      isPageAffiliate = value;
+      notifyListeners();
+    }
   }
 
 }
