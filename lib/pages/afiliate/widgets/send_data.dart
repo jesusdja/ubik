@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
@@ -23,7 +24,7 @@ class _SendDataState extends State<SendData> {
 
   late AffiliateUserProvider affiliateUserProvider;
   bool isLoad = false;
-
+  UploadTask? uploadTask;
   @override
   Widget build(BuildContext context) {
 
@@ -120,10 +121,54 @@ class _SendDataState extends State<SendData> {
     );
   }
 
+  Widget progressUploadTask(){
+    return uploadTask == null ? Container() :
+    StreamBuilder<TaskSnapshot>(
+      stream: uploadTask?.snapshotEvents,
+      builder: (context,snapshot){
+        if(snapshot.hasData){
+          final data = snapshot.data!;
+          double progress = data.bytesTransferred / data.totalBytes;
+          return Container(
+            height: sizeH * 0.025,
+            margin: EdgeInsets.symmetric(horizontal: sizeW * 0.1),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    backgroundColor: Colors.grey,
+                    color: UbicaColors.primary,
+                  ),
+                ),
+                Center(
+                  child: Text('${(100 * progress).roundToDouble()}%',
+                      style: UbicaStyles().stylePrimary(size: sizeH * 0.02, color: Colors.white,enumStyle: EnumStyle.semiBold)),
+                )
+              ],
+            ),
+          );
+        }
+        return Container();
+      },
+    );
+
+  }
+
   Widget saveButton() {
     return isLoad ?
-    circularProgressColors(widthContainer1: sizeW, colorCircular: UbicaColors.primary, widthContainer2: sizeH * 0.03)
-    :
+    SizedBox(
+      width: sizeW,
+      child: Column(
+        children: [
+          progressUploadTask(),
+          SizedBox(height: sizeH * 0.01,),
+          circularProgressColors(widthContainer1: sizeW, colorCircular: UbicaColors.primary, widthContainer2: sizeH * 0.03),
+        ],
+      ),
+    ) :
     InkWell(
       child: Container(
         width: sizeW * 0.3,
@@ -141,28 +186,50 @@ class _SendDataState extends State<SendData> {
           child: Text('AFILIAR',style: UbicaStyles().stylePrimary(size: sizeH * 0.018, color: UbicaColors.white, enumStyle: EnumStyle.medium)),
         ),
       ),
-      onTap: () async {
-        isLoad = true;
-        setState(() {});
-        try{
-          Map<String,dynamic> data = affiliateUserProvider.toMap();
-          data['uid'] = Provider.of<UserProvider>(context,listen: false).userFirebase!.uid;
-          data['status'] = mapStAffiliateStatus[affiliateStatus.wait];
-          bool res = await FirebaseConnectionAffiliates().createAffiliate(data);
-          if(res){
-            await alertFinish();
-            Provider.of<HomeProvider>(context,listen: false).changePageAffiliate(value: false);
-          }else{
-            showAlert(text: 'Error de conexión con el servidor', isError: true);
-          }
-        }catch(e){
-          showAlert(text: 'Error de conexión con el servidor', isError: true);
-          debugPrint('Error: ${e.toString()}');
-        }
-        isLoad = false;
-        setState(() {});
-      },
+      onTap: () => saveButtonPress(),
     );
+  }
+
+  Future saveButtonPress()async{
+    isLoad = true;
+    setState(() {});
+    try{
+      Map<String,dynamic> data = affiliateUserProvider.toMap();
+      //SUBIR LISTA DE FOTOS
+      List<String> newPhotos = [];
+      for(int x = 0; x < affiliateUserProvider.photos.length; x++){
+        String pathPhoto = affiliateUserProvider.photos[x];
+        if(pathPhoto.isNotEmpty){
+          String name = pathPhoto.split('/').last;
+          final pathUpload = 'files/$name';
+          final file = File(pathPhoto);
+          final ref = FirebaseStorage.instance.ref().child(pathUpload);
+          uploadTask = ref.putFile(file);
+          setState(() {});
+          final snapshot = await uploadTask!;
+          final urlUpload = await snapshot.ref.getDownloadURL();
+          newPhotos.add(urlUpload);
+        }
+      }
+
+      data['photos'] = newPhotos;
+      data['uid'] = Provider.of<UserProvider>(context,listen: false).userFirebase!.uid;
+      data['status'] = mapStAffiliateStatus[affiliateStatus.wait];
+      data['isService'] = false;
+      data['isBusiness'] = false;
+      bool res = await FirebaseConnectionAffiliates().createAffiliate(data);
+      if(res){
+        await alertFinish();
+        Provider.of<HomeProvider>(context,listen: false).changePageAffiliate(value: false);
+      }else{
+        showAlert(text: 'Error de conexión con el servidor', isError: true);
+      }
+    }catch(e){
+      showAlert(text: 'Error de conexión con el servidor', isError: true);
+      debugPrint('Error: ${e.toString()}');
+    }
+    isLoad = false;
+    setState(() {});
   }
 
   Future alertFinish() async{

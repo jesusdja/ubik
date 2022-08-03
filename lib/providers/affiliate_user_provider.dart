@@ -20,7 +20,6 @@ class AffiliateUserProvider extends ChangeNotifier {
   Map<String,dynamic> toMap(){
     return {
       'placeSelect' : placeSelect,
-      'photos' : photos,
       'name' : name,
       'prePhone' : prePhone,
       'phone' : phone,

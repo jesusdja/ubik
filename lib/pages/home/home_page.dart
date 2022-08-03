@@ -229,9 +229,11 @@ class _HomePageState extends State<HomePage> {
         children: [
           onTapContainer(url: homeProvider.isPageAffiliate ? 'cart-orange.png' : 'iconshopping.png', title: 'Afíliate', select: homeProvider.isPageAffiliate,
             onTap: (){
-              final affiliateUserProvider = Provider.of<AffiliateUserProvider>(context, listen: false);
-              affiliateUserProvider.dataInitial();
-              homeProvider.changePageAffiliate(value: true);
+              if(!homeProvider.isPageAffiliate){
+                final affiliateUserProvider = Provider.of<AffiliateUserProvider>(context, listen: false);
+                affiliateUserProvider.dataInitial();
+                homeProvider.changePageAffiliate(value: true);
+              }
             },
           ),
           onTapContainer(url: homeProvider.isPageAffiliate ? 'u-grey.png' : 'iconHome.png', title: 'Inicio', select: !homeProvider.isPageAffiliate,

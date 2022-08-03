@@ -69,11 +69,10 @@ class _AffiliatePageState extends State<AffiliatePage> {
               children: [
                 InkWell(
                   onTap: (){
-                    if(affiliateUserProvider.pageAffiliate == 0 || affiliateUserProvider.pageAffiliate == 3){
+                    if(affiliateUserProvider.pageAffiliate == 0){
                       homeProvider.changePageAffiliate(value: false);
                     }else{
                       affiliateUserProvider.changePage(value: affiliateUserProvider.pageAffiliate - 1);
-                      setState(() {});
                     }
                   },
                   child: Container(
@@ -172,57 +171,6 @@ class _AffiliatePageState extends State<AffiliatePage> {
           ],
         ),
       ),
-    );
-  }
-
-  void alertFinish(BuildContext context){
-    Size size = MediaQuery.of(context).size;
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: ( context ) {
-          return WillPopScope(
-            onWillPop: () => Future.value(false),
-            child: AlertDialog(
-              content: SizedBox(
-                width: size.width * 0.8,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('¡GRACIAS!', style: UbicaStyles().stylePrimary(size: size.height * 0.04, color: UbicaColors.primary,fontWeight: FontWeight.bold,enumStyle: EnumStyle.medium),),
-                    SizedBox(height: size.height * 0.025,),
-                    Text('Tu proceso de afiliación ha sido exitoso. En breve un ejecutivo se comunicará contigo',
-                    style: UbicaStyles().stylePrimary(size: size.height * 0.02, enumStyle: EnumStyle.medium),textAlign: TextAlign.center,),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                InkWell(
-                  child: Container(
-                    width: size.width,
-                    height: size.height * 0.05,
-                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.2,vertical: size.height * 0.015),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: UbicaColors.primary,
-                      border: Border.all(
-                        color: UbicaColors.primary,
-                        width: 1.5,
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                    child: Center(
-                      child: Text('ACEPTAR',style: UbicaStyles().stylePrimary(size: size.height * 0.018, color: UbicaColors.white, enumStyle: EnumStyle.medium)),
-                    ),
-                  ),
-                  onTap: (){
-                    homeProvider.changePageAffiliate(value: false);
-                  },
-                )
-              ],
-            ),
-          );
-        }
     );
   }
 }
