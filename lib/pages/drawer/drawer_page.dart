@@ -6,6 +6,7 @@ import 'package:ubik/initial_page.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/pages/drawer/widgets/drawer_1_about.dart';
 import 'package:ubik/pages/drawer/widgets/drawer_2_update_profile.dart';
+import 'package:ubik/pages/drawer/widgets/drawer_3_me_services.dart';
 import 'package:ubik/providers/user_provider.dart';
 import 'package:ubik/services/finish_app.dart';
 import 'package:ubik/widgets_utils/appbar_widgets.dart';
@@ -101,13 +102,10 @@ class _DrawerPageState extends State<DrawerPage> {
           }),
           space,
           _rowButton(iconName: 'icon_mis_servicios.png',textTop: 'Mis Servicios', onTap: (){
-            //router.Router.navigator.pushNamed(router.Router.menuMeServices);
+            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context2) => const DrawerMeServices()));
           }),
           space,
           _rowButton(iconName: 'icon_salir_app.png',textTop: 'Salir',onTap: () async {
-            // AuthBloc(AuthRepository()).add(AuthEvent.signedOut());
-            // router.Router.navigator.pushReplacementNamed(router.Router.login);
-
             bool? res = await alertClosetSession(context);
             if(res != null && res){
               await finishApp();
