@@ -5,6 +5,7 @@ import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/pages/afiliate/affiliate_page.dart';
 import 'package:ubik/pages/drawer/drawer_page.dart';
+import 'package:ubik/pages/services_and_business/servicers_page.dart';
 import 'package:ubik/providers/affiliate_user_provider.dart';
 import 'package:ubik/providers/home_provider.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
@@ -95,20 +96,18 @@ class _HomePageState extends State<HomePage> {
   Widget _containerServices(int type){
     String title = 'Servicios';
     Image imageCardBack = ViewImage().assetsImage('assets/image/Imagen-home-services.png');
-    if(type == 1){}
     if(type == 2){
       title = 'Comercios';
       imageCardBack = ViewImage().assetsImage('assets/image/Imagen-comercios.png');
-    }
-    if(type == 3){
-      title = 'Emprendedores';
-      imageCardBack = ViewImage().assetsImage('assets/image/homescreen_bg_emprendedores.png');
     }
 
     double h = sizeH * 0.22;
 
     return InkWell(
-      onTap: (){},// => router.Router.navigator.pushNamed(router.Router.servicesPage,arguments: type),
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder:
+            (BuildContext context2) => ServicesPage(typeCategory: type,)));
+      },
       child: SizedBox(
         height: h,
         width: sizeW,

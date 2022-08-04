@@ -5,6 +5,7 @@ import 'package:ubik/initial_page.dart';
 import 'package:ubik/providers/affiliate_user_provider.dart';
 import 'package:ubik/providers/auth_provider.dart';
 import 'package:ubik/providers/home_provider.dart';
+import 'package:ubik/providers/services_provider.dart';
 import 'package:ubik/providers/user_provider.dart';
 import 'package:ubik/services/sharedprefereces.dart';
 
@@ -30,6 +31,7 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(lazy: false,create: ( _ ) => AuthProvider()),
         ChangeNotifierProvider(lazy: false,create: ( _ ) => UserProvider()),
         ChangeNotifierProvider(lazy: false,create: ( _ ) => HomeProvider()),
+        ChangeNotifierProvider(lazy: false,create: ( _ ) => ServicesProvider()),
         ChangeNotifierProvider(lazy: false,create: ( _ ) => AffiliateUserProvider()),
       ],
       child: const MyApp(),
