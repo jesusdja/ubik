@@ -53,6 +53,7 @@ class _ServicesViewState extends State<ServicesView> {
 
   @override
   void dispose() {
+    categoryProvider.changeLoad = true;
     _controller.dispose();
     super.dispose();
   }
@@ -181,8 +182,7 @@ class _ServicesViewState extends State<ServicesView> {
         prefixIconConstraints: BoxConstraints.expand(width: sizeH * 0.05, height: sizeH * 0.05),
         suffixIconConstraints: BoxConstraints.expand(width: sizeH * 0.05, height: sizeH * 0.04),
         onChanged: (String value){
-          //TODO CHANGE
-          //contextPage.bloc<ServicesBloc>()..add(ServicesEvent.filterChangedAffiliate(value));
+          setState(() {});
         },
       ),
     );
@@ -339,17 +339,13 @@ class _ServicesViewState extends State<ServicesView> {
   }
 
   Widget _cardPresentation({required Map<String, dynamic> dataUser}){
-    String distanciaKm = '0';
-    // distanciaKm = '${dataUser['user']['distance']}';
-    //
+    String distanciaKm = (dataUser['distance'] as double).toStringAsFixed(0);
     Image imageProfile = ViewImage().assetsImage('assets/image/Rectangle_38.png');
-    // if(dataUser['user']['avatar'] != null){
-    //   imageProfile = ViewImage().netWork(dataUser['user']['avatar'],'');
-    // }
-    //
-    String _description = '';
-    // _description = dataUser['user']['description'] ?? '';
-    //
+    if(dataUser['profile']['photo'] != null){
+      imageProfile = ViewImage().netWork(dataUser['profile']['photo'],'');
+    }
+
+    String _description = dataUser['description'] ?? '';
     String nameUser =  dataUser['name'] ?? '';
 
     String affiliateRate = '0';
@@ -388,7 +384,7 @@ class _ServicesViewState extends State<ServicesView> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: imageProfile.image,
-                    fit: BoxFit.contain,
+                    fit: BoxFit.fitHeight,
                   ),
                   borderRadius: BorderRadius.circular(8.0),
                   boxShadow: const [
@@ -412,58 +408,58 @@ class _ServicesViewState extends State<ServicesView> {
                       width: sizeW,
                       child: Text(nameUser.replaceAll('|', ''), style: UbicaStyles().stylePrimary(size: sizeH * 0.025,fontWeight: FontWeight.bold, enumStyle: EnumStyle.regular),maxLines: 1,),
                     ),
-                    // SizedBox(height: sizeH * 0.005,),
-                    // SizedBox(
-                    //   width: sizeW,
-                    //   child: RichText(
-                    //     textAlign: TextAlign.left,
-                    //     text: TextSpan(
-                    //       text: '',
-                    //       style: UbicaStyles().stylePrimary(size: sizeH * 0.02, enumStyle: EnumStyle.semiBold),
-                    //       children: [
-                    //         WidgetSpan(
-                    //           child: Container(
-                    //             width: sizeH * 0.02,
-                    //             height: sizeH * 0.02,
-                    //             margin: EdgeInsets.only(bottom: sizeH * 0.002),
-                    //             decoration: BoxDecoration(
-                    //               image: DecorationImage(
-                    //                 image: ViewImage().assetsImage('assets/image/icon_full_star_small.png').image,
-                    //                 fit: BoxFit.fill,
-                    //               ),
-                    //             ),
-                    //           ),
-                    //         ),
-                    //         WidgetSpan(
-                    //           child: Container(
-                    //             margin: EdgeInsets.only(left: sizeW * 0.01),
-                    //             child: Text(double.parse(affiliateRate).toStringAsFixed(1),style: UbicaStyles().stylePrimary(size: sizeH * 0.02, fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),
-                    //             ),
-                    //           ),
-                    //         ),
-                    //         WidgetSpan(
-                    //           child: Container(
-                    //             margin: EdgeInsets.only(left: sizeW * 0.04),
-                    //             child: containerImageAssets(sizeH * 0.02, sizeH * 0.02,'icon_direccion_profiles.png'),
-                    //           ),
-                    //         ),
-                    //         WidgetSpan(
-                    //           child: Container(
-                    //             margin: EdgeInsets.only(left: sizeW * 0.02),
-                    //             child: Text('A $distanciaKm km, ${dataUser['user']['city']}',style: UbicaStyles().stylePrimary(size: sizeH * 0.018, fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),),
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                    // SizedBox(height: sizeH * 0.005,),
-                    // SizedBox(
-                    //   child: Text(_description,
-                    //     style: UbicaStyles().stylePrimary(size: sizeH * 0.018,enumStyle: EnumStyle.regular),
-                    //     textAlign: TextAlign.justify,
-                    //     maxLines: 3,),
-                    // ),
+                    SizedBox(height: sizeH * 0.005,),
+                    SizedBox(
+                      width: sizeW,
+                      child: RichText(
+                        textAlign: TextAlign.left,
+                        text: TextSpan(
+                          text: '',
+                          style: UbicaStyles().stylePrimary(size: sizeH * 0.02, enumStyle: EnumStyle.semiBold),
+                          children: [
+                            WidgetSpan(
+                              child: Container(
+                                width: sizeH * 0.02,
+                                height: sizeH * 0.02,
+                                margin: EdgeInsets.only(bottom: sizeH * 0.002),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: ViewImage().assetsImage('assets/image/icon_full_star_small.png').image,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            WidgetSpan(
+                              child: Container(
+                                margin: EdgeInsets.only(left: sizeW * 0.01),
+                                child: Text(double.parse(affiliateRate).toStringAsFixed(1),style: UbicaStyles().stylePrimary(size: sizeH * 0.02, fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),
+                                ),
+                              ),
+                            ),
+                            WidgetSpan(
+                              child: Container(
+                                margin: EdgeInsets.only(left: sizeW * 0.04),
+                                child: containerImageAssets(sizeH * 0.02, sizeH * 0.02,'icon_direccion_profiles.png'),
+                              ),
+                            ),
+                            WidgetSpan(
+                              child: Container(
+                                margin: EdgeInsets.only(left: sizeW * 0.02),
+                                child: Text('A $distanciaKm km, ${dataUser['placeSelect']['city']}',style: UbicaStyles().stylePrimary(size: sizeH * 0.018, fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: sizeH * 0.005,),
+                    SizedBox(
+                      child: Text(_description,
+                        style: UbicaStyles().stylePrimary(size: sizeH * 0.018,enumStyle: EnumStyle.regular),
+                        textAlign: TextAlign.justify,
+                        maxLines: 3,),
+                    ),
                   ],
                 ),
               ),
