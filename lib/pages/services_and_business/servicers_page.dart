@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
+import 'package:ubik/pages/services_and_business/services_page_2.dart';
 import 'package:ubik/providers/services_provider.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
 import 'package:ubik/widgets_utils/textfield_general.dart';
@@ -17,15 +18,11 @@ class ServicesPage extends StatefulWidget {
 
 class _ServicesPageState extends State<ServicesPage> {
 
-  final List<String> filterKm = ['Normal (200 metros)','400 metros','600 metros'];
   TextEditingController tbs = TextEditingController();
   late ServicesProvider servicesProvider;
-
   @override
   Widget build(BuildContext context) {
-
     servicesProvider = Provider.of<ServicesProvider>(context);
-
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
@@ -156,18 +153,11 @@ class _ServicesPageState extends State<ServicesPage> {
             ),
             child: InkWell(
                 onTap: (){
-                  // router.Router.navigator.pushNamed(
-                  //     router.Router.servicesView,
-                  //     arguments: router.ServicesViewArguments(
-                  //       title: listConta[index]['name'],
-                  //       typeCategory: widget.typeCategory,
-                  //       idCategory: listConta[index]['id'],
-                  //     ));
-                  // context.bloc<ServicesBloc>()..add(ServicesEvent.filterChanged(''));
-                  // FocusScope.of(context).requestFocus(new FocusNode());
-                  // setState(() {
-                  //   tbs.text = '';
-                  // });
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  tbs.text = '';
+                  setState(() {});
+                  Navigator.push(context, MaterialPageRoute(builder:
+                      (BuildContext context2) => ServicesView(typeCategory: widget.typeCategory, category: listConta[index])));
                 },
                 child: Row(
                   children: [

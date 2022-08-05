@@ -1,4 +1,9 @@
 
+import 'dart:math';
+
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+
 enum affiliateStatus {
   wait,
   processing,
@@ -32,4 +37,21 @@ Map<String,List<String>> getDataCountries(){
   dataInfoCodigoMarcado['PER'] = ["Perú","+51","186","9","9"];
   dataInfoCodigoMarcado['VEN'] = ["Venezuela","+58","241","10","10"];
   return dataInfoCodigoMarcado;
+}
+
+String getDistanceTwoPoints(LatLng yourPos, LatLng mePos){
+  double distance = 0;
+  var p = 0.017453292519943295;
+  var c = cos;
+  var a = 0.5 - c((yourPos.latitude - mePos.latitude) * p)/2 +
+      c(mePos.latitude * p) * c(yourPos.latitude * p) *
+          (1 - c((yourPos.longitude - mePos.longitude) * p))/2;
+  distance = 12742 * asin(sqrt(a));
+  return distance.toStringAsFixed(2);
+}
+
+Future<LatLng> getPositionNow() async{
+  Location location = Location();
+  LocationData currentLocation = await location.getLocation();
+  return LatLng(currentLocation.latitude!, currentLocation.longitude!);
 }

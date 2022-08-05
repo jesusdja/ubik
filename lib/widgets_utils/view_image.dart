@@ -34,3 +34,16 @@ class ViewImage {
     return File(croppedImage!.path);
   }
 }
+
+Widget containerImageAssets(double sizeH, double sizeW, String rutaName){
+  return Container(
+    width: sizeH,
+    height: sizeH,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: ViewImage().assetsImage('assets/image/$rutaName').image,
+        fit: BoxFit.contain,
+      ),
+    ),
+  );
+}

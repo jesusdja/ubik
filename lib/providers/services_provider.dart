@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ubik/services/firebase/firebase_connection_affiliates.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ServicesProvider extends ChangeNotifier {
+
+  final CollectionReference categoryCollection = FirebaseFirestore.instance.collection('category');
 
   bool loadDataService = true;
   bool loadDataBusiness = true;
@@ -14,7 +16,7 @@ class ServicesProvider extends ChangeNotifier {
   }
 
   Future initialFirebaseListener()async{
-    FirebaseConnectionAffiliates().affiliatesCollection.where('isService',isEqualTo: true).snapshots().listen((event) {
+    categoryCollection.where('isService',isEqualTo: true).snapshots().listen((event) {
       try{
         for (var element in event.docs) {
           Map<String,dynamic> data = element.data() as Map<String,dynamic>;
@@ -28,7 +30,7 @@ class ServicesProvider extends ChangeNotifier {
       notifyListeners();
     });
 
-    FirebaseConnectionAffiliates().affiliatesCollection.where('isBusiness',isEqualTo: true).snapshots().listen((event) {
+    categoryCollection.where('isBusiness',isEqualTo: true).snapshots().listen((event) {
       try{
         for (var element in event.docs) {
           Map<String,dynamic> data = element.data() as Map<String,dynamic>;

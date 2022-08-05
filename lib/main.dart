@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:ubik/initial_page.dart';
 import 'package:ubik/providers/affiliate_user_provider.dart';
 import 'package:ubik/providers/auth_provider.dart';
+import 'package:ubik/providers/category_provider.dart';
 import 'package:ubik/providers/home_provider.dart';
 import 'package:ubik/providers/services_provider.dart';
 import 'package:ubik/providers/user_provider.dart';
@@ -33,6 +34,7 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(lazy: false,create: ( _ ) => HomeProvider()),
         ChangeNotifierProvider(lazy: false,create: ( _ ) => ServicesProvider()),
         ChangeNotifierProvider(lazy: false,create: ( _ ) => AffiliateUserProvider()),
+        ChangeNotifierProvider(lazy: false,create: ( _ ) => CategoryProvider()),
       ],
       child: const MyApp(),
     );

@@ -215,8 +215,7 @@ class _SendDataState extends State<SendData> {
       data['photos'] = newPhotos;
       data['uid'] = Provider.of<UserProvider>(context,listen: false).userFirebase!.uid;
       data['status'] = mapStAffiliateStatus[affiliateStatus.wait];
-      data['isService'] = false;
-      data['isBusiness'] = false;
+      data['categoryId'] = '';
       bool res = await FirebaseConnectionAffiliates().createAffiliate(data);
       if(res){
         await alertFinish();
