@@ -7,7 +7,7 @@ import 'package:ubik/services/sharedprefereces.dart';
 class AuthenticateFirebaseUser{
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  Future<Map<String,dynamic>> registerFirebase({required String email, required String password, required String alias})async{
+  Future<Map<String,dynamic>> registerFirebase({required String email, required String password, required String alias, required String urlPhoto})async{
     Map<String,dynamic> data = {};
     try{
       final UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(
@@ -15,6 +15,7 @@ class AuthenticateFirebaseUser{
           password: password
       );
       await userCredential.user!.updateDisplayName(alias);
+      await userCredential.user!.updatePhotoURL(urlPhoto);
       data['user'] = userCredential.user;
       SharedPrefs.prefs.setBool('ubikLogin',false);
     } on FirebaseAuthException catch (e){

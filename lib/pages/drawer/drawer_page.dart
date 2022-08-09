@@ -109,6 +109,7 @@ class _DrawerPageState extends State<DrawerPage> {
             bool? res = await alertClosetSession(context);
             if(res != null && res){
               await finishApp();
+              Navigator.of(context).pop();
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context2) => const InitialPage()));
             }
           }),

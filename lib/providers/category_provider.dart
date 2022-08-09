@@ -16,6 +16,8 @@ class CategoryProvider extends ChangeNotifier {
   int typeCategory = 1;
   LatLng positionNow = const LatLng(0.0, 0.0);
 
+  Map<String,dynamic> userSelectedDetails = {};
+
   CategoryProvider(){
     initialFirebaseListener();
   }
@@ -33,6 +35,7 @@ class CategoryProvider extends ChangeNotifier {
   set changeTypeCategory(int value){  typeCategory = value; notifyListeners();}
   set changeFilterDistance(int value){  filterDistance = value; notifyListeners();}
   set changeUserSelectedMap(Map<String,dynamic> value){  userSelectedMap = value; notifyListeners();}
+  set changeUserSelectedDetails(Map<String,dynamic> value){  userSelectedDetails = value; notifyListeners();}
   set changeIndexPage(int value){  indexPage = value; notifyListeners();}
   set listUserForCategory(List<Map<String,dynamic>> value) { dataBusinessAll = value; notifyListeners(); }
 

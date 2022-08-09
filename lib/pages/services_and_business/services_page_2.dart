@@ -6,6 +6,7 @@ import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/pages/services_and_business/services_page_2_map.dart';
+import 'package:ubik/pages/services_and_business/services_page_3.dart';
 import 'package:ubik/providers/category_provider.dart';
 import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
@@ -306,22 +307,6 @@ class _ServicesViewState extends State<ServicesView> {
               );
             },
             separatorBuilder: (context, index) {
-              //TODO CHANGE
-              // String distanciaKm = '0';
-              // if(state.position.latitude != 0 && state.position.longitude != 0){
-              //   distanciaKm = getDistanceTwoPoints(LatLng(double.parse(listConta[index]['user']['latitude']),double.parse(listConta[index]['user']['longitude'])) , state.position);
-              // }
-              // bool see = true;
-              // if(state.filterDistance != 0 && distanciaKm != '0'){
-              //   if(state.filterDistance == 1 && double.parse(distanciaKm) > 0.2){ see = false;}
-              //   if(state.filterDistance == 2 && double.parse(distanciaKm) > 0.4){ see = false;}
-              //   if(state.filterDistance == 3 && double.parse(distanciaKm) > 0.6){ see = false;}
-              // }
-              //
-              // String nameAffiliate = '${listConta[index]['user']['name']} ${listConta[index]['user']['surname']}';
-              // if(!see || state.filterAffiliate.isNotEmpty && !(nameAffiliate.toLowerCase().contains(state.filterAffiliate.toLowerCase()))){
-              //   return Container();
-              // }
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: sizeW * 0.05),
                 child: Divider(
@@ -347,25 +332,15 @@ class _ServicesViewState extends State<ServicesView> {
     String nameUser =  dataUser['name'] ?? '';
 
     String affiliateRate = '0';
+    //TODO CHANGE
     // if(dataUser['affiliate_rate'] != null && dataUser['affiliate_rate'] != ''){
     //   affiliateRate = '${dataUser['affiliate_rate']}';
     // }
 
     return InkWell(
       onTap: (){
-        //TODO CHANGE
-        // router.Router.navigator.pushNamed(router.Router.servicesDetails,
-        //     arguments: router.ServicesDetailsArguments(
-        //       typeCategory: widget.typeCategory,
-        //       affiliate: dataUser['user'],
-        //       distance: distanciaKm,
-        //       servicesAffiliate: dataUser,
-        //     ));
-        // contextPage.bloc<ServicesBloc>()..add(ServicesEvent.filterChangedAffiliate(''));
-        // FocusScope.of(context).requestFocus(new FocusNode());
-        // setState(() {
-        //   tbs.text = '';
-        // });
+        categoryProvider.userSelectedDetails = dataUser;
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context2) => const ServicesDetails()));
       },
       child: Container(
         width: sizeW,
