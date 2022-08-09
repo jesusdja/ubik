@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
+import 'package:ubik/pages/services_and_business/services_page_2_map.dart';
 import 'package:ubik/providers/category_provider.dart';
 import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
@@ -49,6 +50,7 @@ class _ServicesViewState extends State<ServicesView> {
   Future initialData() async{
     await Future.delayed(const Duration(seconds: 1));
     categoryProvider.changeCategory = widget.category;
+    categoryProvider.changeTypeCategory = widget.typeCategory;
   }
 
   @override
@@ -199,9 +201,7 @@ class _ServicesViewState extends State<ServicesView> {
         itemBuilder: (context, i){
           return InkWell(
             onTap: (){
-              //TODO CHANGE
-              // idSelectd = state.usersAffiliate[i]['id'].toString();
-              // setState(() {});
+              categoryProvider.changeUserSelectedMap = categoryProvider.listUsers[i];
             },
             child: SizedBox(
               width: sizeW * 0.15,
@@ -209,15 +209,14 @@ class _ServicesViewState extends State<ServicesView> {
                 child: Container(
                   width: sizeH * 0.06,
                   height: sizeH * 0.06,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
+                      borderRadius: const BorderRadius.all(Radius.circular(30)),
                       color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      //TODO CHANGE
-                      // image: DecorationImage(
-                      //   image: ViewImage().netWork(state.usersAffiliate[i]['user']['avatar'], '').image,
-                      //   fit: BoxFit.fill,
-                      // )
+                      image: DecorationImage(
+                        image: ViewImage().netWork(categoryProvider.listUsers[i]['profile']['photo']).image,
+                        fit: BoxFit.fill,
+                      )
                   ),
                 ),
               ),
@@ -254,15 +253,14 @@ class _ServicesViewState extends State<ServicesView> {
           controller: _controller,
           onPageChanged: (index){
             if(index == 0){
-              categoryProvider.changeUserSelectedMap = '0';
+              categoryProvider.changeUserSelectedMap = {};
             }
             categoryProvider.indexPage = index;
             setState(() {});
           },
           children: [
             _listContainer(),
-            //TODO CHANGE
-            Container()//MapViewServices(typeCategory: widget.typeCategory),
+            const MapViewServices(),
           ],
         ),
       ),
@@ -342,7 +340,7 @@ class _ServicesViewState extends State<ServicesView> {
     String distanciaKm = (dataUser['distance'] as double).toStringAsFixed(0);
     Image imageProfile = ViewImage().assetsImage('assets/image/Rectangle_38.png');
     if(dataUser['profile']['photo'] != null){
-      imageProfile = ViewImage().netWork(dataUser['profile']['photo'],'');
+      imageProfile = ViewImage().netWork(dataUser['profile']['photo']);
     }
 
     String _description = dataUser['description'] ?? '';

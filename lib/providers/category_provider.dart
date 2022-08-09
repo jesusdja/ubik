@@ -10,9 +10,10 @@ class CategoryProvider extends ChangeNotifier {
   List<Map<String,dynamic>> dataBusinessAll = [];
   List<Map<String,dynamic>> listUsers = [];
   bool loadDataInitial = true;
-  String userSelectedMap = '0';
+  Map<String,dynamic> userSelectedMap = {};
   int indexPage = 0;
   int filterDistance = 0;
+  int typeCategory = 1;
   LatLng positionNow = const LatLng(0.0, 0.0);
 
   CategoryProvider(){
@@ -23,13 +24,15 @@ class CategoryProvider extends ChangeNotifier {
     categorySelected = value;
     listUsers = [];
     loadDataInitial = true;
+    indexPage = 0;
     notifyListeners();
     refreshPosition();
     getListFilterForCategory();
   }
   set changeLoad(bool value){  loadDataInitial = value; notifyListeners();}
+  set changeTypeCategory(int value){  typeCategory = value; notifyListeners();}
   set changeFilterDistance(int value){  filterDistance = value; notifyListeners();}
-  set changeUserSelectedMap(String value){  userSelectedMap = value; notifyListeners();}
+  set changeUserSelectedMap(Map<String,dynamic> value){  userSelectedMap = value; notifyListeners();}
   set changeIndexPage(int value){  indexPage = value; notifyListeners();}
   set listUserForCategory(List<Map<String,dynamic>> value) { dataBusinessAll = value; notifyListeners(); }
 

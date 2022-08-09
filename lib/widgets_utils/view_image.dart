@@ -7,7 +7,7 @@ class ViewImage {
   Image assetsImage(String ruta) {
     return Image.asset(ruta);
   }
-  Image netWork(String ruta, String name) {
+  Image netWork(String ruta) {
     Image image = Image.network(ruta);
     return image;
   }
