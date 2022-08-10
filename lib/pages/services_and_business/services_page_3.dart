@@ -5,9 +5,11 @@ import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/providers/category_provider.dart';
+import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
 import 'package:ubik/widgets_utils/button_profile.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
+import 'package:ubik/widgets_utils/toast_widget.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
 class ServicesDetails extends StatefulWidget {
@@ -124,7 +126,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
 
   Widget columnContainer(){
 
-    String description = /*widget.affiliate['description'] ?? ''; */'Profesional de cerrajería con más de 10 años de experiencia.\nEnim malesuada erat lectus magna gravida cras ultricies ac lacus aliquet velit et sapien hac pulvinar felis massa pellentesque feugiat tempus pulvinar et metus mauris vel nulla auctor nunc, quis elementum proin lectus sed fermentum vitae purus in fermentum fusce dui quam quis varius in est sit vivamus quis integer vel vitae ut ac non felis sagittis, amet pharetra, pellentesque risus, et lobortis sed mus sit cras a sed aliquam massa id eros, nec duis in vestibulum in turpis sapien at mi nunc dictum posuere magna diam massa arcu accumsan, ac dictum adipiscing faucibus aliquam lacus, ipsum leo.';
+    String description = categoryProvider.userSelectedDetails['description'] ?? ''; //'Profesional de cerrajería con más de 10 años de experiencia.\nEnim malesuada erat lectus magna gravida cras ultricies ac lacus aliquet velit et sapien hac pulvinar felis massa pellentesque feugiat tempus pulvinar et metus mauris vel nulla auctor nunc, quis elementum proin lectus sed fermentum vitae purus in fermentum fusce dui quam quis varius in est sit vivamus quis integer vel vitae ut ac non felis sagittis, amet pharetra, pellentesque risus, et lobortis sed mus sit cras a sed aliquam massa id eros, nec duis in vestibulum in turpis sapien at mi nunc dictum posuere magna diam massa arcu accumsan, ac dictum adipiscing faucibus aliquam lacus, ipsum leo.';
     //TODO CHANGE
     List<Widget> listStar = [star(2),star(2),star(2),star(2),star(2),];
     // if(widget.servicesAffiliate['affiliate_rate'] != null && widget.servicesAffiliate['affiliate_rate'] != ''){
@@ -142,6 +144,8 @@ class _ServicesDetailsState extends State<ServicesDetails> {
     //   if(affiliateRate >= 5){listStar = [star(0),star(0),star(0),star(0),star(0),];}
     // }
 
+    String phone = '${getDataCountries()[categoryProvider.userSelectedDetails['prePhone']]![1]}${categoryProvider.userSelectedDetails['phone']}';
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -151,9 +155,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
         Container(
           width: sizeW,
           margin: EdgeInsets.only(top: sizeH * 0.05, left: sizeW * 0.06),
-          //TODO CHANGE
-          child: Text('NOMBRE AFILIADO',style: UbicaStyles().stylePrimary(size: sizeH * 0.03,fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),textAlign: TextAlign.left,),
-          //child: Text('${widget.affiliate['name']} ${widget.affiliate['surname']}',style: UbicaStyles().stylePrimary(size: sizeH * 0.03,fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),textAlign: TextAlign.left,),
+          child: Text(categoryProvider.userSelectedDetails['name'],style: UbicaStyles().stylePrimary(size: sizeH * 0.03,fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),textAlign: TextAlign.left,),
         ),
         Container(
           width: sizeW,
@@ -171,9 +173,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
             children: <Widget>[
               containerImageAssets(sizeH * 0.02, sizeH * 0.02,'icon_direccion_profiles.png'),
               SizedBox(width: sizeW * 0.01,),
-              //TODO CHANGE
-              Text('',style: UbicaStyles().stylePrimary(size: sizeH * 0.018,fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),),
-              //Text('A ${widget.distance} km, ${widget.affiliate['city']}',style: UbicaStyles().styleLight(sizeH * 0.018,bold: FontWeight.bold),),
+              Text('A ${categoryProvider.userSelectedDetails['distance']} km, ${categoryProvider.userSelectedDetails['placeSelect']['city']}',style: UbicaStyles().stylePrimary(size: sizeH * 0.018,fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),),
             ],
           ),
         ),
@@ -205,25 +205,21 @@ class _ServicesDetailsState extends State<ServicesDetails> {
           child: Text('Contacto:',style: UbicaStyles().stylePrimary(size: sizeH * 0.025,fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),textAlign: TextAlign.left,),
         ),
         SizedBox(height: sizeH * 0.02,),
-        Container(
+        SizedBox(
           width: sizeW,
           child: Column(
             children: <Widget>[
-              Container(
+              SizedBox(
                 width: sizeW,
                 child: Row(
                   children: <Widget>[
                     SizedBox(width: sizeW * 0.04,),
                     Expanded(
-                      //TODO CHANGE
-                      child: buttonContact(type: 1,data: 'phone',onPress: (){}),
-                      //child: buttonContact(sizeH,sizeW,1,widget.affiliate['phone'],(){}, context),
+                      child: buttonContact(type: 1,data: phone),
                     ),
                     SizedBox(width: sizeW * 0.04,),
                     Expanded(
-                      //TODO CHANGE
-                      //child: buttonContact(0,widget.affiliate['phone'],(){}, context),
-                      child: buttonContact(type: 0,data: 'phone',onPress: (){}),
+                      child: buttonContact(type: 0,data: phone),
                     ),
                     SizedBox(width: sizeW * 0.04,),
                   ],
@@ -232,9 +228,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
               Container(
                 width: sizeW,
                 padding: EdgeInsets.all(sizeW * 0.04,),
-                //TODO CHANGE
-                //child: buttonContact(type: 2,data: widget.affiliate['email'],onPress: (){}),
-                child: buttonContact(type: 2,data: 'email',onPress: (){}),
+                child: buttonContact(type: 2,data: categoryProvider.userSelectedDetails['profile']['email']),
               ),
             ],
           ),
@@ -262,7 +256,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
     );
   }
 
-  Widget buttonContact({required int type, required String data, required Function onPress}){
+  Widget buttonContact({required int type, required String data}){
     Color colorBg = UbicaColors.color6FCF97;
     Color colorFont = UbicaColors.black;
     String imageStr = 'icon_whatsapp_profiles.png';
@@ -278,27 +272,18 @@ class _ServicesDetailsState extends State<ServicesDetails> {
     return InkWell(
       onTap: (){
         if(type == 0){
-          //TODO CHANGE
-          //String num = widget.affiliate['phone'];
-          String num = 'phone';
-          num = num.replaceAll(' ','');
-          num = num.replaceAll('+','');
-          //TODO CHANGE
-          //Helpers.launchURL('https://wa.me/$num');
+          String phone = '${getDataCountries()[categoryProvider.userSelectedDetails['prePhone']]![1]}${categoryProvider.userSelectedDetails['phone']}';
+          phone = phone.replaceAll(' ','').replaceAll('+','');
+          Helpers.launchURL('https://wa.me/$num');
         }
         if(type == 1){
-          Clipboard.setData(ClipboardData(text: data));
-          //TODO CHANGE
-          //showSuccess(context,'Copiado $data');
+          Helpers.launchURL('tel://$data');
         }
         if(type == 2){
-          Clipboard.setData(ClipboardData(text: data));
-          //TODO CHANGE
-          //Helpers.launchURL('mailto:$data?subject=&body=%20plugin');
+          Helpers.launchURL('mailto:$data?subject=Contacto Ubi-k&body=%20Saludos, le escribo desde la app Ubi-k');
         }
       },
       child: Container(
-        //height: sizeH * 0.05,
         padding: EdgeInsets.all(sizeH * 0.01),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.0),
@@ -379,31 +364,37 @@ class _ServicesDetailsState extends State<ServicesDetails> {
   Map<String,dynamic> _galleryMap(){
     bool _l = false;
     bool _r = false;
-    //TODO CHANGE
-    // String _image = widget.affiliate['avatar'];
-    //
-    // if(pageGalery == 0){
-    //   _l = false;_r = false;
-    //   if(widget.affiliate['photo2'] != null){
-    //     _r = true;
-    //   }
-    // }
-    // if(pageGalery == 1){
-    //   _l = true;_r = false;
-    //   if(widget.affiliate['photo3'] != null){
-    //     _r = true;
-    //   }
-    // }
-    // if(pageGalery == 2){
-    //   _l = true;_r = false;
-    //   if(widget.affiliate['photo4'] != null){
-    //     _r = true;
-    //   }
-    // }
-    // if(pageGalery == 3){
-    //   _l = true;_r = false;
-    // }
-    Map<String,dynamic> gale = {}; // { 'image' : _image, 'L': _l, 'R': _r };
+    String _image = categoryProvider.userSelectedDetails['profile']['photoURL'];
+    List photos = categoryProvider.userSelectedDetails['photos'] as List;
+
+    if(pageGallery == 0){
+      _l = false;_r = false;
+      if(photos.length == 1){
+        _r = true;
+      }
+    }
+    if(pageGallery == 1){
+      _l = true;_r = false;
+      if(photos.length > 1){
+        _r = true;
+      }
+    }
+    if(pageGallery == 2){
+      _l = true;_r = false;
+      if(photos.length > 2){
+        _r = true;
+      }
+    }
+    if(pageGallery == 3){
+      _l = true;_r = false;
+      if(photos.length > 3){
+        _r = true;
+      }
+    }
+    if(pageGallery == 4){
+      _l = true;_r = false;
+    }
+    Map<String,dynamic> gale = { 'image' : _image, 'L': _l, 'R': _r };
     return gale;
   }
 
@@ -413,7 +404,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
     if(galleryMap.isNotEmpty){
       List<Widget> _pages = [
         Hero(
-          tag: 'idAfi', //TODO CHANGE  widget.affiliate['id'],
+          tag: categoryProvider.userSelectedDetails['uid'],
           child: Container(
             width: sizeW,
             height: sizeH * 0.4,
@@ -427,46 +418,20 @@ class _ServicesDetailsState extends State<ServicesDetails> {
           ),
         ),
       ];
-      //TODO CHANGE
-      // if(widget.affiliate['photo2'] != null){
-      //   _pages.add(Container(
-      //     width: sizeW,
-      //     height: sizeH * 0.4,
-      //     margin: EdgeInsets.symmetric(horizontal: sizeW * 0.06),
-      //     decoration: BoxDecoration(
-      //       image: DecorationImage(
-      //         image: ViewImage().netWork(widget.affiliate['photo2'],'').image,
-      //         fit: BoxFit.fitWidth,
-      //       ),
-      //     ),
-      //   ));
-      // }
-      // if(widget.affiliate['photo3'] != null){
-      //   _pages.add(Container(
-      //     width: sizeW,
-      //     height: sizeH * 0.4,
-      //     margin: EdgeInsets.symmetric(horizontal: sizeW * 0.06),
-      //     decoration: BoxDecoration(
-      //       image: DecorationImage(
-      //         image: ViewImage().netWork(widget.affiliate['photo3'],'').image,
-      //         fit: BoxFit.fitWidth,
-      //       ),
-      //     ),
-      //   ));
-      // }
-      // if(widget.affiliate['photo4'] != null){
-      //   _pages.add(Container(
-      //     width: sizeW,
-      //     height: sizeH * 0.4,
-      //     margin: EdgeInsets.symmetric(horizontal: sizeW * 0.06),
-      //     decoration: BoxDecoration(
-      //       image: DecorationImage(
-      //         image: ViewImage().netWork(widget.affiliate['photo4'],'').image,
-      //         fit: BoxFit.fitWidth,
-      //       ),
-      //     ),
-      //   ));
-      // }
+      List photos = categoryProvider.userSelectedDetails['photos'] as List;
+      for(int x = 0; x < photos.length; x++){
+        _pages.add(Container(
+          width: sizeW,
+          height: sizeH * 0.4,
+          margin: EdgeInsets.symmetric(horizontal: sizeW * 0.06),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: ViewImage().netWork(photos[x]).image,
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+        ));
+      }
 
       return SizedBox(
         width: sizeW,
@@ -522,22 +487,25 @@ class _ServicesDetailsState extends State<ServicesDetails> {
   }
 
   Widget _galleryPhotoCircular(){
-    //TODO CHANGE
-    bool image2 = false;// widget.affiliate['photo2'] != null;
-    bool image3 = false;// = widget.affiliate['photo3'] != null;
-    bool image4 = false;// = widget.affiliate['photo4'] != null;
+    List photos = categoryProvider.userSelectedDetails['photos'] as List;
+    bool image1 = photos.isNotEmpty;
+    bool image2 = photos.length > 1;
+    bool image3 = photos.length > 2;
+    bool image4 = photos.length > 3;
     return SizedBox(
       width: sizeW,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(Icons.brightness_1,size: sizeH * 0.025, color: pageGallery == 0 ? UbicaColors.primary : UbicaColors.grey,),
+          !image1 ? Container() : SizedBox(width: sizeH * 0.005,),
+          !image1 ? Container() : Icon(Icons.brightness_1,size: sizeH * 0.025, color: pageGallery == 1 ? UbicaColors.primary : UbicaColors.grey,),
           !image2 ? Container() : SizedBox(width: sizeH * 0.005,),
-          !image2 ? Container() : Icon(Icons.brightness_1,size: sizeH * 0.025, color: pageGallery == 1 ? UbicaColors.primary : UbicaColors.grey,),
+          !image2 ? Container() : Icon(Icons.brightness_1,size: sizeH * 0.025, color: pageGallery == 2 ? UbicaColors.primary : UbicaColors.grey,),
           !image3 ? Container() : SizedBox(width: sizeH * 0.005,),
-          !image3 ? Container() : Icon(Icons.brightness_1,size: sizeH * 0.025, color: pageGallery == 2 ? UbicaColors.primary : UbicaColors.grey,),
+          !image3 ? Container() : Icon(Icons.brightness_1,size: sizeH * 0.025, color: pageGallery == 3 ? UbicaColors.primary : UbicaColors.grey,),
           !image4 ? Container() : SizedBox(width: sizeH * 0.005,),
-          !image4 ? Container() : Icon(Icons.brightness_1,size: sizeH * 0.025, color: pageGallery == 3 ? UbicaColors.primary : UbicaColors.grey,),
+          !image4 ? Container() : Icon(Icons.brightness_1,size: sizeH * 0.025, color: pageGallery == 4 ? UbicaColors.primary : UbicaColors.grey,),
         ],
       ),
     );
@@ -546,6 +514,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
   Widget logoButtonContact(){
 
     Widget space = SizedBox(width: sizeW * 0.035,);
+    String phone = '${getDataCountries()[categoryProvider.userSelectedDetails['prePhone']]![1]}${categoryProvider.userSelectedDetails['phone']}';
 
     return Container(
       margin: EdgeInsets.only(top: sizeH * 0.01,bottom: sizeH * 0.01),
@@ -571,8 +540,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
           Expanded(
             child: ButtonGeneral(
               title: 'SMS',
-              //TODO CHANGE
-              onPressed: (){}, // => Helpers.launchURL('sms: ${widget.affiliate['phone']}'),
+              onPressed: () => Helpers.launchURL('sms: $phone'),
               backgroundColor: UbicaColors.primary,
               borderColor: UbicaColors.primary,
               textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.018,color: UbicaColors.white,fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),

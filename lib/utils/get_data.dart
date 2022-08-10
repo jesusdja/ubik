@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum affiliateStatus {
   wait,
@@ -54,4 +55,13 @@ Future<LatLng> getPositionNow() async{
   Location location = Location();
   LocationData currentLocation = await location.getLocation();
   return LatLng(currentLocation.latitude!, currentLocation.longitude!);
+}
+
+class Helpers {
+  static void launchURL(String url) async {
+    final Uri _url = Uri.parse(url);
+    if (!await launchUrl(_url)) {
+      throw 'Could not launch $_url';
+    }
+  }
 }

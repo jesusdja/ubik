@@ -323,10 +323,12 @@ class _ServicesViewState extends State<ServicesView> {
 
   Widget _cardPresentation({required Map<String, dynamic> dataUser}){
     String distanciaKm = (dataUser['distance'] as double).toStringAsFixed(0);
-    Image imageProfile = ViewImage().assetsImage('assets/image/Rectangle_38.png');
-    if(dataUser['profile']['photoURL'] != null){
-      imageProfile = ViewImage().netWork(dataUser['profile']['photoURL']);
-    }
+    // Widget imageProfile = ViewImage().assetsImage('assets/image/Rectangle_38.png');
+    // if(dataUser['profile']['photoURL'] != null){
+    //   imageProfile = ViewImage().netWorkCache(dataUser['profile']['photoURL']);
+    // }
+
+    Widget imageProfile = ViewImage().netWorkCache(dataUser['profile']['photoURL']);
 
     String _description = dataUser['description'] ?? '';
     String nameUser =  dataUser['name'] ?? '';
@@ -351,23 +353,10 @@ class _ServicesViewState extends State<ServicesView> {
           children: <Widget>[
             Hero(
               tag: dataUser['uid'],
-              child: Container(
+              child: SizedBox(
                 width: sizeW * 0.3,
                 height: sizeW * 0.3,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProfile.image,
-                    fit: BoxFit.fitHeight,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey,
-                      offset: Offset(0.0, 1.0), //(x,y)
-                      blurRadius: 1.0,
-                    ),
-                  ],
-                ),
+                child: imageProfile,
               ),
             ),
             Expanded(
