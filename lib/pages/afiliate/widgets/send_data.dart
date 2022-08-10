@@ -9,6 +9,7 @@ import 'package:ubik/providers/affiliate_user_provider.dart';
 import 'package:ubik/providers/home_provider.dart';
 import 'package:ubik/providers/user_provider.dart';
 import 'package:ubik/services/firebase/firebase_connection_affiliates.dart';
+import 'package:ubik/services/firebase/firebase_connection_categories.dart';
 import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
 import 'package:ubik/widgets_utils/toast_widget.dart';
@@ -241,6 +242,9 @@ class _SendDataState extends State<SendData> {
 
       bool res = await FirebaseConnectionAffiliates().createAffiliate(data);
       if(res){
+        int cant = affiliateUserProvider.categorySelected['cant'] + 1;
+        affiliateUserProvider.categorySelected['cant'] = cant;
+        await FirebaseConnectionCategories().editCategory(data: affiliateUserProvider.categorySelected, id: affiliateUserProvider.categorySelected['idC']);
         await alertFinish();
         Provider.of<HomeProvider>(context,listen: false).changePageAffiliate(value: false);
       }else{

@@ -215,7 +215,7 @@ class _ServicesViewState extends State<ServicesView> {
                       borderRadius: const BorderRadius.all(Radius.circular(30)),
                       color: Colors.white,
                       image: DecorationImage(
-                        image: ViewImage().netWork(categoryProvider.listUsers[i]['profile']['photo']).image,
+                        image: ViewImage().netWork(categoryProvider.listUsers[i]['profile']['photoURL']).image,
                         fit: BoxFit.fill,
                       )
                   ),
@@ -324,8 +324,8 @@ class _ServicesViewState extends State<ServicesView> {
   Widget _cardPresentation({required Map<String, dynamic> dataUser}){
     String distanciaKm = (dataUser['distance'] as double).toStringAsFixed(0);
     Image imageProfile = ViewImage().assetsImage('assets/image/Rectangle_38.png');
-    if(dataUser['profile']['photo'] != null){
-      imageProfile = ViewImage().netWork(dataUser['profile']['photo']);
+    if(dataUser['profile']['photoURL'] != null){
+      imageProfile = ViewImage().netWork(dataUser['profile']['photoURL']);
     }
 
     String _description = dataUser['description'] ?? '';

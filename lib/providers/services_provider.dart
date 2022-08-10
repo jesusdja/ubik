@@ -18,9 +18,12 @@ class ServicesProvider extends ChangeNotifier {
   Future initialFirebaseListener()async{
     categoryCollection.where('isService',isEqualTo: true).snapshots().listen((event) {
       try{
+        dataServices = [];
         for (var element in event.docs) {
           Map<String,dynamic> data = element.data() as Map<String,dynamic>;
-          dataServices.add(data);
+          if(data['cant'] != 0){
+            dataServices.add(data);
+          }
         }
       }catch(e){
         debugPrint('Error : ${e.toString()}');
@@ -32,9 +35,12 @@ class ServicesProvider extends ChangeNotifier {
 
     categoryCollection.where('isBusiness',isEqualTo: true).snapshots().listen((event) {
       try{
+        dataBusiness = [];
         for (var element in event.docs) {
           Map<String,dynamic> data = element.data() as Map<String,dynamic>;
-          dataBusiness.add(data);
+          if(data['cant'] != 0){
+            dataBusiness.add(data);
+          }
         }
       }catch(e){
         debugPrint('Error : ${e.toString()}');

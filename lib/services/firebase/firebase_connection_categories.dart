@@ -16,5 +16,16 @@ class FirebaseConnectionCategories{
     return listAll;
   }
 
+  Future<bool> editCategory({required Map<String, dynamic> data,required String id}) async {
+    bool res = false;
+    try{
+      await categoriesCollection.doc(id).update(data);
+      res = true;
+    }catch(ex){
+      debugPrint(ex.toString());
+    }
+    return res;
+  }
+
 }
 

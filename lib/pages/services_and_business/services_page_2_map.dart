@@ -162,7 +162,7 @@ class _MapViewState extends State<MapViewServices> {
     List<Widget> listMark = [];
     listMark.add(_getMarkerWidget(0, UbicaColors.primary,''));
     for (var element in categoryProvider.listUsers) {
-      listMark.add(_getMarkerWidget(1, UbicaColors.color6FCF97,element['profile']['photo']));
+      listMark.add(_getMarkerWidget(1, UbicaColors.color6FCF97,element['profile']['photoURL']));
     }
     return listMark;
   }
