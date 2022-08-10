@@ -266,7 +266,7 @@ class _SendDataState extends State<SendData> {
           return WillPopScope(
             onWillPop: () => Future.value(false),
             child: AlertDialog(
-              content: Container(
+              content: SizedBox(
                 width: sizeW * 0.8,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

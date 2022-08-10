@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
-import 'package:ubik/main.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
 AppBar appBarWidget({

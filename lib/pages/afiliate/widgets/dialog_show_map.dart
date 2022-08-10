@@ -12,7 +12,6 @@ import 'package:ubik/main.dart';
 import 'package:ubik/providers/affiliate_user_provider.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
 import 'package:ubik/widgets_utils/google_map_widget.dart';
-import 'package:ubik/widgets_utils/map_marker.dart';
 import 'package:ubik/widgets_utils/toast_widget.dart';
 
 class DialogShowMap extends StatefulWidget {
@@ -113,7 +112,7 @@ class _DialogShowMapState extends State<DialogShowMap> {
     String state = placeSelect['state'];
     String city = placeSelect['city'];
 
-    return Container(
+    return SizedBox(
       width: sizeW,
       child: Text(
         '$country, $state, $city, $name ($lat-$lg)',

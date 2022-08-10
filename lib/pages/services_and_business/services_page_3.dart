@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
+import 'package:ubik/pages/services_and_business/widgets/map_view_details.dart';
 import 'package:ubik/providers/category_provider.dart';
 import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
 import 'package:ubik/widgets_utils/button_profile.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
-import 'package:ubik/widgets_utils/toast_widget.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
 class ServicesDetails extends StatefulWidget {
@@ -234,8 +233,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
           ),
         ),
         SizedBox(height: sizeH * 0.05,),
-        //TODO CHANGE
-        //MapView(typeCate: widget.typeCategory,affiliate: widget.affiliate,distance: widget.distance,servicesAffiliate: widget.servicesAffiliate,),
+        const MapView(),
         SizedBox(
           width: sizeW,
           child: Center(

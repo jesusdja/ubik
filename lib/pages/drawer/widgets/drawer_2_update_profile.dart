@@ -309,7 +309,7 @@ class _DrawerUpdateProfileState extends State<DrawerUpdateProfile> {
     setState(() {});
   }
 
-  Widget textTitle(String title, double sizeH,{ TextAlign alinear: TextAlign.left} ){
+  Widget textTitle(String title, double sizeH,{ TextAlign alinear = TextAlign.left} ){
     return Text(title,textAlign: alinear,
       style: UbicaStyles().stylePrimary(size: sizeH * 0.025, color: UbicaColors.black,fontWeight: FontWeight.bold,enumStyle: EnumStyle.light),
     );

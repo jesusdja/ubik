@@ -1,19 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/providers/affiliate_user_provider.dart';
-import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/dropdown_button_generic.dart';
-import 'package:ubik/widgets_utils/gallery_camera_dialog.dart';
 import 'package:ubik/widgets_utils/textfield_general.dart';
 import 'package:ubik/widgets_utils/toast_widget.dart';
-import 'package:ubik/widgets_utils/view_image.dart';
 
 class DataUserCategoryAffiliate extends StatefulWidget {
   const DataUserCategoryAffiliate({Key? key}) : super(key: key);

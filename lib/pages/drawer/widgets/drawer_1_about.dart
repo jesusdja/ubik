@@ -3,7 +3,7 @@ import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/pages/drawer/widgets/drawer_4_policies_privacy.dart';
-import 'package:ubik/pages/drawer/widgets/drawer_5_terms_Conditions.dart';
+import 'package:ubik/pages/drawer/widgets/drawer_5_terms_conditions.dart';
 import 'package:ubik/widgets_utils/logo_botton.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
