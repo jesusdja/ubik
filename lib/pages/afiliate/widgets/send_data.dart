@@ -32,35 +32,52 @@ class _SendDataState extends State<SendData> {
     TextStyle style = UbicaStyles().stylePrimary(size: sizeH * 0.02, color: UbicaColors.black, enumStyle: EnumStyle.medium);
     TextStyle style2 = UbicaStyles().stylePrimary(size: sizeH * 0.023, color: UbicaColors.black, enumStyle: EnumStyle.medium);
 
-    return SingleChildScrollView(
+    return SizedBox(
+      width: sizeW,
+      height: sizeH * 0.71,
       child: Column(
-        children: <Widget>[
-          SizedBox(height: sizeH * 0.02,),
-          SizedBox(
-            width: sizeW,
-            child: Text('Revisar datos',style: style2 ,textAlign: TextAlign.center,),
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: sizeH * 0.02,),
+                  SizedBox(
+                    width: sizeW,
+                    child: Text('Revisar datos',style: style2 ,textAlign: TextAlign.center,),
+                  ),
+                  SizedBox(height: sizeH * 0.05,),
+                  containerColumnData(title: 'Nombre',subTitle: affiliateUserProvider.name,style: style),
+                  SizedBox(height: sizeH * 0.02,),
+                  containerColumnData(title: 'Teléfono',subTitle: '${getDataCountries()[affiliateUserProvider.prePhone]![1]}${affiliateUserProvider.phone}',style: style),
+                  SizedBox(height: sizeH * 0.02,),
+                  containerColumnData(title: 'Descripción',subTitle: affiliateUserProvider.description,style: style),
+                  SizedBox(height: sizeH * 0.02,),
+                  containerColumnData(title: 'Categoría',subTitle: '${affiliateUserProvider.categorySelected['isService'] ? 'Servicio' : 'Comercio'} - ${affiliateUserProvider.categorySelected['name']}',style: style),
+                  SizedBox(height: sizeH * 0.02,),
+                  containerColumnData(title: 'Dirección',subTitle: '${affiliateUserProvider.placeSelect['name']}',style: style),
+                  SizedBox(height: sizeH * 0.02,),
+                  containerColumnData(title: 'País',subTitle: '${affiliateUserProvider.placeSelect['country']}',style: style),
+                  SizedBox(height: sizeH * 0.02,),
+                  containerColumnData(title: 'Estado ',subTitle: '${affiliateUserProvider.placeSelect['state']}',style: style),
+                  SizedBox(height: sizeH * 0.02,),
+                  containerColumnData(title: 'Ciudad',subTitle: '${affiliateUserProvider.placeSelect['city']}',style: style),
+                  SizedBox(height: sizeH * 0.02,),
+                  SizedBox(
+                    width: sizeW,
+                    child: Text('Fotos ',style: style ,textAlign: TextAlign.left,),
+                  ),
+                  SizedBox(height: sizeH * 0.02,),
+                  addPhotos(),
+                  SizedBox(height: sizeH * 0.03,),
+                ],
+              ),
+            ),
           ),
-          SizedBox(height: sizeH * 0.05,),
-          containerColumnData(title: 'Nombre:',subTitle: affiliateUserProvider.name,style: style),
-          SizedBox(height: sizeH * 0.02,),
-          containerColumnData(title: 'Teléfono:',subTitle: '${getDataCountries()[affiliateUserProvider.prePhone]![1]}${affiliateUserProvider.phone}',style: style),
-          SizedBox(height: sizeH * 0.02,),
-          containerColumnData(title: 'Dirección:',subTitle: '${affiliateUserProvider.placeSelect['name']}',style: style),
-          SizedBox(height: sizeH * 0.02,),
-          containerColumnData(title: 'País:',subTitle: '${affiliateUserProvider.placeSelect['country']}',style: style),
-          SizedBox(height: sizeH * 0.02,),
-          containerColumnData(title: 'Estado: ',subTitle: '${affiliateUserProvider.placeSelect['state']}',style: style),
-          SizedBox(height: sizeH * 0.02,),
-          containerColumnData(title: 'Ciudad:',subTitle: '${affiliateUserProvider.placeSelect['city']}',style: style),
-          SizedBox(height: sizeH * 0.02,),
-          SizedBox(
-            width: sizeW,
-            child: Text('Fotos: ',style: style ,textAlign: TextAlign.left,),
-          ),
-          SizedBox(height: sizeH * 0.02,),
-          addPhotos(),
-          SizedBox(height: sizeH * 0.06,),
+          SizedBox(height: sizeH * 0.03,),
           saveButton(),
+          SizedBox(height: sizeH * 0.05,),
         ],
       ),
     );
@@ -72,7 +89,7 @@ class _SendDataState extends State<SendData> {
       child: Row(
         children: [
           SizedBox(
-            width: sizeW * 0.22,
+            width: sizeW * 0.3,
             child: Text(title,style: style,),
           ),
           Expanded(
@@ -211,11 +228,17 @@ class _SendDataState extends State<SendData> {
           newPhotos.add(urlUpload);
         }
       }
-
       data['photos'] = newPhotos;
-      data['uid'] = Provider.of<UserProvider>(context,listen: false).userFirebase!.uid;
       data['status'] = mapStAffiliateStatus[affiliateStatus.wait];
-      data['categoryId'] = '';
+      data['categoryId'] = affiliateUserProvider.categorySelected['idC'];
+
+      data['uid'] = Provider.of<UserProvider>(context,listen: false).userFirebase!.uid;
+      data['profile'] = {
+        'name' : Provider.of<UserProvider>(context,listen: false).userFirebase!.displayName,
+        'email' : Provider.of<UserProvider>(context,listen: false).userFirebase!.email,
+        'photoURL' : Provider.of<UserProvider>(context,listen: false).userFirebase!.photoURL,
+      };
+
       bool res = await FirebaseConnectionAffiliates().createAffiliate(data);
       if(res){
         await alertFinish();

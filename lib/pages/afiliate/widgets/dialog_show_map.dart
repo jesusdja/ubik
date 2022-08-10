@@ -372,7 +372,7 @@ class _DialogShowMapState extends State<DialogShowMap> {
         if(placeSelect.isNotEmpty){
           AffiliateUserProvider affiliateUserProvider = Provider.of<AffiliateUserProvider>(context, listen: false);
           affiliateUserProvider.changePlace(value: placeSelect);
-          affiliateUserProvider.changePage(value: 2);
+          affiliateUserProvider.changePage(value: 3);
         }else{
           showAlert(text: 'Debe seleccionar otro punto en el mapa', isError: true);
         }

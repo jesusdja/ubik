@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
@@ -8,6 +12,7 @@ import 'package:ubik/services/authenticate_firebase.dart';
 import 'package:ubik/widgets_utils/appbar_widgets.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
+import 'package:ubik/widgets_utils/gallery_camera_dialog.dart';
 import 'package:ubik/widgets_utils/textfield_general.dart';
 import 'package:ubik/widgets_utils/toast_widget.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
@@ -30,6 +35,9 @@ class _DrawerUpdateProfileState extends State<DrawerUpdateProfile> {
   bool editPass = false;
   bool editPass2 = false;
   bool editName = false;
+  String urlPhoto = '';
+  File? photoUser;
+  String urlPhotoOld = '';
 
   @override
   void initState() {
@@ -42,6 +50,8 @@ class _DrawerUpdateProfileState extends State<DrawerUpdateProfile> {
 
     if(userProvider.userFirebase != null){
       controllerName.text = userProvider.userFirebase!.displayName ?? '';
+      urlPhoto = userProvider.userFirebase!.photoURL ?? '';
+      urlPhotoOld = userProvider.userFirebase!.photoURL ?? '';
       loadDataInitial = false;
       setState(() {});
     }else{
@@ -80,6 +90,60 @@ class _DrawerUpdateProfileState extends State<DrawerUpdateProfile> {
     );
   }
 
+  Widget addPhoto(){
+    return InkWell(
+      child: SizedBox(
+        width: sizeW,
+        child: Center(
+          child: SizedBox(
+            width: sizeH * 0.25,
+            height: sizeH * 0.25,
+            child: CircleAvatar(
+              backgroundColor: Colors.grey.withOpacity(0.3),
+              child: photoUser != null ?
+              ClipOval(
+                child: Image(
+                  image: ViewImage().fileImage(photoUser!).image ,
+                  fit: BoxFit.contain,
+                ),
+              ) :
+              urlPhoto.isNotEmpty ?
+              ClipOval(
+                child: Image(
+                  image: ViewImage().netWork(urlPhoto).image ,
+                  fit: BoxFit.contain,
+                ),
+              ) :
+              SizedBox(
+                child: Center(
+                  child: Icon(Icons.image,size: sizeH * 0.1,color: Colors.grey,),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      onTap: () async {
+        XFile? media = await Navigator.push(context, MaterialPageRoute(
+            builder: (BuildContext context) => const GalleryCameraDialog(
+              isVideo: false,
+            ))
+        );
+        if(media != null) {
+          try{
+            File? croppedImage = await ViewImage().croppedImageView(cropStyle: CropStyle.circle, imageFilepath: media.path);
+            if(croppedImage != null){
+              photoUser = croppedImage;
+              setState(() {});
+            }
+          }catch(e){
+            debugPrint(e.toString());
+          }
+        }
+      },
+    );
+  }
+
   Widget form(){
 
     Widget lockedTextField = Container(
@@ -102,6 +166,8 @@ class _DrawerUpdateProfileState extends State<DrawerUpdateProfile> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            SizedBox(height: sizeH * 0.05,),
+            addPhoto(),
             SizedBox(height: sizeH * 0.05,),
             textTitle('Datos personales', sizeH),
             SizedBox(height: sizeH * 0.03,),
@@ -197,11 +263,12 @@ class _DrawerUpdateProfileState extends State<DrawerUpdateProfile> {
       errorText = 'Contraseña nueva no puede estar vacio';
     }
 
-    if(errorText.isEmpty && (editName || (editPass && editPass2))){
+    if(errorText.isEmpty && (editName || (editPass && editPass2) || photoUser != null)){
       try{
         String pass = '';
         String pass2 = '';
         String name = '';
+        String pathImage = '';
         if(editPass && editPass2){
           pass = controllerPass.text;
           pass2 = controllerPass2.text;
@@ -210,13 +277,20 @@ class _DrawerUpdateProfileState extends State<DrawerUpdateProfile> {
           name = controllerName.text;
         }
 
-        Map<String,dynamic> data = await AuthenticateFirebaseUser()
-            .editFirebaseUser(
+        if(photoUser != null){
+          pathImage = photoUser!.path;
+        }
+
+        Map<String,dynamic> data = await AuthenticateFirebaseUser().editFirebaseUser(
           userCredential: userProvider.userFirebase!,
           name: name,
-          pass: pass,pass2: pass2
+          pass: pass,pass2: pass2,
+          pathImage: pathImage,
         );
         if(data.isEmpty){
+          if(urlPhotoOld.isNotEmpty){
+            await FirebaseStorage.instance.refFromURL(urlPhotoOld).delete();
+          }
           showAlert(text: '¡ Edición correcta !');
           userProvider.refreshUser();
           Navigator.of(context).pop();

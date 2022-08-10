@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ubik/services/sharedprefereces.dart';
 
@@ -74,7 +76,7 @@ class AuthenticateFirebaseUser{
     return data;
   }
 
-  Future<Map<String,dynamic>> editFirebaseUser({required User userCredential, String name = '', String pass = '', String pass2 = ''})async{
+  Future<Map<String,dynamic>> editFirebaseUser({required User userCredential, String name = '', String pass = '', String pass2 = '', String pathImage = ''})async{
     Map<String,dynamic> data = {};
     try{
       if(name.isNotEmpty){
@@ -82,6 +84,16 @@ class AuthenticateFirebaseUser{
       }
       if(pass.isNotEmpty && pass2.isNotEmpty && pass != pass2){
         await userCredential.updatePassword(pass2);
+      }
+      if(pathImage.isNotEmpty){
+        String name = pathImage.split('/').last;
+        final pathUpload = 'files/$name';
+        final file = File(pathImage);
+        final ref = FirebaseStorage.instance.ref().child(pathUpload);
+        UploadTask uploadTask = ref.putFile(file);
+        final snapshot = await uploadTask;
+        final urlUpload = await snapshot.ref.getDownloadURL();
+        await userCredential.updatePhotoURL(urlUpload);
       }
     } on FirebaseAuthException catch (e){
       debugPrint(e.toString());
