@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
-import 'package:ubik/pages/services_and_business/services_page_2_map.dart';
-import 'package:ubik/pages/services_and_business/services_page_3.dart';
+import 'package:ubik/views/services_and_business/services_page_2_map.dart';
+import 'package:ubik/views/services_and_business/services_page_3.dart';
 import 'package:ubik/providers/category_provider.dart';
 import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
@@ -323,10 +323,6 @@ class _ServicesViewState extends State<ServicesView> {
 
   Widget _cardPresentation({required Map<String, dynamic> dataUser}){
     String distanciaKm = (dataUser['distance'] as double).toStringAsFixed(0);
-    // Widget imageProfile = ViewImage().assetsImage('assets/image/Rectangle_38.png');
-    // if(dataUser['profile']['photoURL'] != null){
-    //   imageProfile = ViewImage().netWorkCache(dataUser['profile']['photoURL']);
-    // }
 
     Widget imageProfile = ViewImage().netWorkCache(dataUser['profile']['photoURL']);
 

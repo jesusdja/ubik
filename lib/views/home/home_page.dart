@@ -3,9 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
-import 'package:ubik/pages/afiliate/affiliate_page.dart';
-import 'package:ubik/pages/drawer/drawer_page.dart';
-import 'package:ubik/pages/services_and_business/servicers_page.dart';
+import 'package:ubik/providers/user_provider.dart';
+import 'package:ubik/views/afiliate/affiliate_page.dart';
+import 'package:ubik/views/drawer/drawer_page.dart';
+import 'package:ubik/views/services_and_business/servicers_page.dart';
 import 'package:ubik/providers/affiliate_user_provider.dart';
 import 'package:ubik/providers/home_provider.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
@@ -21,6 +22,14 @@ class _HomePageState extends State<HomePage> {
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late HomeProvider homeProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 1)).then((value) {
+      Provider.of<UserProvider>(context,listen: false).refreshUser();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

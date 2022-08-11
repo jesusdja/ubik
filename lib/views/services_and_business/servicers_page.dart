@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
-import 'package:ubik/pages/services_and_business/services_page_2.dart';
+import 'package:ubik/views/services_and_business/services_page_2.dart';
 import 'package:ubik/providers/services_provider.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
 import 'package:ubik/widgets_utils/textfield_general.dart';

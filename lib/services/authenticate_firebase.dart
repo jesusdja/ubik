@@ -18,6 +18,7 @@ class AuthenticateFirebaseUser{
       await userCredential.user!.updateDisplayName(alias);
       await userCredential.user!.updatePhotoURL(urlPhoto);
       data['user'] = userCredential.user;
+      SharedPrefs.prefs.setString('userFirebaseUbik',userCredential.user!.uid);
       SharedPrefs.prefs.setBool('ubikLogin',false);
     } on FirebaseAuthException catch (e){
       debugPrint(e.toString());
@@ -34,6 +35,7 @@ class AuthenticateFirebaseUser{
           password: password
       );
       data['user'] = userCredential.user;
+      SharedPrefs.prefs.setString('userFirebaseUbik',userCredential.user!.uid);
       SharedPrefs.prefs.setBool('ubikLogin',false);
     } on FirebaseAuthException catch (e){
       debugPrint(e.toString());

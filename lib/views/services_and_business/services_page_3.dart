@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
-import 'package:ubik/pages/services_and_business/widgets/map_view_details.dart';
+import 'package:ubik/views/services_and_business/widgets/map_view_details.dart';
 import 'package:ubik/providers/category_provider.dart';
 import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
@@ -538,7 +539,14 @@ class _ServicesDetailsState extends State<ServicesDetails> {
             child: ButtonGeneral(
               title: 'CONTACTAR',
               //TODO CHANGE
-              onPressed: (){}, // => contextGene.bloc<ServicesBloc>()..add(ServicesEvent.contractServices(widget.affiliate['id'])),
+              onPressed: (){
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const ShowCupertinoModalContactar();
+                  },
+                );
+              }, // => contextGene.bloc<ServicesBloc>()..add(ServicesEvent.contractServices(widget.affiliate['id'])),
               backgroundColor: UbicaColors.color6FCF97,
               borderColor: UbicaColors.color6FCF97,
               textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.018,fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),
@@ -575,6 +583,89 @@ class _ServicesDetailsState extends State<ServicesDetails> {
             image: DecorationImage(
               image: ViewImage().assetsImage('assets/image/icon_back_app-orange.png').image,
               fit: BoxFit.fill,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ShowCupertinoModalContactar extends StatefulWidget {
+  const ShowCupertinoModalContactar({Key? key}) : super(key: key);
+  @override
+  _ShowCupertinoModalContactarState createState() => _ShowCupertinoModalContactarState();
+}
+
+class _ShowCupertinoModalContactarState extends State<ShowCupertinoModalContactar> {
+
+  late CategoryProvider categoryProvider;
+  bool isLoad = false;
+
+  @override
+  Widget build(BuildContext context) {
+
+    categoryProvider = Provider.of<CategoryProvider>(context);
+
+    return GestureDetector(
+      onTap: ()=> Navigator.of(context).pop(),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Container(
+            width: sizeW * 0.9,
+            decoration: const BoxDecoration(
+              color: UbicaColors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                SizedBox(height: sizeH * 0.02),
+                Container(
+                  width: sizeW,
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.only(left: sizeW * 0.05),
+                  child: InkWell(
+                    onTap: ()=>Navigator.of(context).pop(),
+                    child: containerImageAssets (sizeH * 0.05, sizeH * 0.09,'icon_close_app_orange.png'),
+                  ),
+                ),
+                SizedBox(height: sizeH * 0.02),
+                Container(
+                  width: sizeW,
+                  margin: EdgeInsets.symmetric(horizontal: sizeW * 0.1),
+                  child: Text('Al aceptar se creara un ticket ',
+                    style: UbicaStyles().stylePrimary(size: sizeH * 0.02,
+                    enumStyle: EnumStyle.regular,),
+                  ),
+                ),
+                SizedBox(height: sizeH * 0.02),
+                Container(
+                  width: sizeW,
+                  margin: EdgeInsets.symmetric(vertical: sizeH * 0.02,horizontal: sizeW * 0.05),
+                  child: Center(
+                    child: isLoad ?
+                    circularProgressColors() :
+                    ButtonGeneral(
+                      title: 'Aceptar',
+                      onPressed: () async {
+                        isLoad = true;
+                        setState(() {});
+
+                        await categoryProvider.contactarAffiliate();
+                        
+                        isLoad = false;
+                        setState(() {});
+                      },
+                      backgroundColor: UbicaColors.color6FCF97,
+                      borderColor: UbicaColors.color6FCF97,
+                      textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.018,fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),
+                      height: sizeH * 0.05,
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         ),

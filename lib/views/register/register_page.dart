@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/main.dart';
-import 'package:ubik/pages/register/widget/register_form.dart';
+import 'package:ubik/views/register/widget/register_form.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
 class RegisterPage extends StatefulWidget {

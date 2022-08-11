@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:ubik/pages/home/home_page.dart';
-import 'package:ubik/pages/login/login_page.dart';
+import 'package:ubik/views/home/home_page.dart';
+import 'package:ubik/views/login/login_page.dart';
 import 'package:ubik/providers/auth_provider.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
 

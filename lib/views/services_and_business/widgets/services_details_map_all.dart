@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
-import 'package:ubik/pages/services_and_business/widgets/marker_generator.dart';
+import 'package:ubik/views/services_and_business/widgets/marker_generator.dart';
 import 'package:ubik/providers/category_provider.dart';
 import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/button_general.dart';

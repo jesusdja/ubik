@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ubik/services/firebase/firebase_connection_affiliates.dart';
+import 'package:ubik/services/firebase/firebase_connection_invoices.dart';
+import 'package:ubik/services/sharedprefereces.dart';
 import 'package:ubik/utils/get_data.dart';
 
 class CategoryProvider extends ChangeNotifier {
@@ -41,13 +43,17 @@ class CategoryProvider extends ChangeNotifier {
   Future initialFirebaseListener() async {
 
     refreshPosition();
+    String uidFirebase = SharedPrefs.prefs.getString('userFirebaseUbik') ?? '';
 
     FirebaseConnectionAffiliates().affiliatesCollection.snapshots().listen((event) {
       try{
         List<Map<String,dynamic>> dataBusinessAux = [];
         for (var element in event.docs) {
           Map<String,dynamic> data = element.data() as Map<String,dynamic>;
-          dataBusinessAux.add(data);
+          if(data['uid'] != uidFirebase){
+            data['id'] = element.id;
+            dataBusinessAux.add(data);
+          }
         }
         listUserForCategory = dataBusinessAux;
       }catch(e){
@@ -84,6 +90,22 @@ class CategoryProvider extends ChangeNotifier {
   refreshPosition() async {
     positionNow = await getPositionNow();
     notifyListeners();
+  }
+
+  Future<bool> contactarAffiliate() async{
+    bool res = false;
+    print('${userSelectedDetails}');
+
+    try{
+
+      Map<String,dynamic> data = {
+
+      };
+
+      //res = await FirebaseConnectionInvoices().createInvoices(data);
+    }catch(_){}
+
+    return res;
   }
 
 }

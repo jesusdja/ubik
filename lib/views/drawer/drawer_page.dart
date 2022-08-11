@@ -4,9 +4,10 @@ import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/initial_page.dart';
 import 'package:ubik/main.dart';
-import 'package:ubik/pages/drawer/widgets/drawer_1_about.dart';
-import 'package:ubik/pages/drawer/widgets/drawer_2_update_profile.dart';
-import 'package:ubik/pages/drawer/widgets/drawer_3_me_services.dart';
+import 'package:ubik/providers/auth_provider.dart';
+import 'package:ubik/views/drawer/widgets/drawer_1_about.dart';
+import 'package:ubik/views/drawer/widgets/drawer_2_update_profile.dart';
+import 'package:ubik/views/drawer/widgets/drawer_3_me_services.dart';
 import 'package:ubik/providers/user_provider.dart';
 import 'package:ubik/services/finish_app.dart';
 import 'package:ubik/widgets_utils/appbar_widgets.dart';
@@ -109,6 +110,8 @@ class _DrawerPageState extends State<DrawerPage> {
             bool? res = await alertClosetSession(context);
             if(res != null && res){
               await finishApp();
+              final authProvider = Provider.of<AuthProvider>(context,listen: false);
+              authProvider.isAuthenticated();
               Navigator.of(context).pop();
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context2) => const InitialPage()));
             }
