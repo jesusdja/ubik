@@ -107,13 +107,21 @@ class _SendDataState extends State<SendData> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          containerAddPhoto(url: affiliateUserProvider.photos[0]),
+          Expanded(
+            child: containerAddPhoto(url: affiliateUserProvider.photos[0]),
+          ),
           SizedBox(width: sizeW * 0.01,),
-          affiliateUserProvider.photos[1].isEmpty ? SizedBox(height: sizeH * 0.11,width: sizeH * 0.1) : containerAddPhoto(url: affiliateUserProvider.photos[1]),
+          Expanded(
+            child: affiliateUserProvider.photos[1].isEmpty ? SizedBox(height: sizeH * 0.11,width: sizeH * 0.1) : containerAddPhoto(url: affiliateUserProvider.photos[1]),
+          ),
           SizedBox(width: sizeW * 0.01,),
-          affiliateUserProvider.photos[2].isEmpty ? SizedBox(height: sizeH * 0.11,width: sizeH * 0.1) : containerAddPhoto(url: affiliateUserProvider.photos[2]),
+          Expanded(
+            child: affiliateUserProvider.photos[2].isEmpty ? SizedBox(height: sizeH * 0.11,width: sizeH * 0.1) : containerAddPhoto(url: affiliateUserProvider.photos[2]),
+          ),
           SizedBox(width: sizeW * 0.01,),
-          affiliateUserProvider.photos[3].isEmpty ? SizedBox(height: sizeH * 0.11,width: sizeH * 0.1) : containerAddPhoto(url: affiliateUserProvider.photos[3]),
+          Expanded(
+            child: affiliateUserProvider.photos[3].isEmpty ? SizedBox(height: sizeH * 0.11,width: sizeH * 0.1) : containerAddPhoto(url: affiliateUserProvider.photos[3]),
+          ),
         ],
       ),
     );
@@ -232,7 +240,7 @@ class _SendDataState extends State<SendData> {
       data['photos'] = newPhotos;
       data['status'] = mapStAffiliateStatus[affiliateStatus.wait];
       data['categoryId'] = affiliateUserProvider.categorySelected['idC'];
-
+      data['rate'] = [];
       data['uid'] = Provider.of<UserProvider>(context,listen: false).userFirebase!.uid;
       data['profile'] = {
         'name' : Provider.of<UserProvider>(context,listen: false).userFirebase!.displayName,

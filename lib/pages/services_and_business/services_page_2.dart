@@ -333,11 +333,10 @@ class _ServicesViewState extends State<ServicesView> {
     String _description = dataUser['description'] ?? '';
     String nameUser =  dataUser['name'] ?? '';
 
-    String affiliateRate = '0';
-    //TODO CHANGE
-    // if(dataUser['affiliate_rate'] != null && dataUser['affiliate_rate'] != ''){
-    //   affiliateRate = '${dataUser['affiliate_rate']}';
-    // }
+    String affiliateRate = '0.0';
+    if(dataUser['pointRate'] != null && dataUser['pointRate'] != 0.0){
+      affiliateRate = (dataUser['pointRate'] as double).toStringAsFixed(1);
+    }
 
     return InkWell(
       onTap: (){

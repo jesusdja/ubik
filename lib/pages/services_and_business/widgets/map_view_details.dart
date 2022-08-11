@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/main.dart';
 import 'package:ubik/pages/services_and_business/widgets/marker_generator.dart';
+import 'package:ubik/pages/services_and_business/widgets/services_details_map_all.dart';
 import 'package:ubik/providers/category_provider.dart';
 import 'package:ubik/widgets_utils/google_map_widget.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
@@ -57,14 +58,7 @@ class _MapViewState extends State<MapView> {
         },
         markers: markers.toSet(),
         onTap: (LatLng latLng) {
-          //TODO CHANGE
-          // router.Router.navigator.pushNamed(router.Router.servicesDetailsMapAll,
-          //     arguments: router.ServicesDetailsMapAllArguments(
-          //       typeCategory: widget.typeCate,
-          //       affiliate: widget.affiliate,
-          //       distance: widget.distance,
-          //       servicesAffiliate: widget.servicesAffiliate
-          //     ));
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context2) => const ServicesDetailsMapAll()));
         },
       ),
     );

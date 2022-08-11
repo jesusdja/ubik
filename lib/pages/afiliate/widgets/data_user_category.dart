@@ -171,6 +171,27 @@ class _DataUserCategoryAffiliateState extends State<DataUserCategoryAffiliate> {
           errorText = 'Descripción no puede estar vacio';
         }
 
+        if(affiliateUserProvider.categorySelected.isEmpty){
+          List<Map<String,dynamic>>? listData = [];
+          for (var element in affiliateUserProvider.listCategories) {
+            if(typeCategory.contains(typeCategoryList[0]) && element['isService']){
+              listData.add(element);
+            }
+          }
+          if(listData.isEmpty){
+            for (var element in affiliateUserProvider.listCategories) {
+              if(typeCategory.contains(typeCategoryList[1]) && element['isBusiness']){
+                listData.add(element);
+              }
+            }
+          }
+          if(listData.isEmpty){
+            errorText = 'Debe seleccionar alguna categoría';
+          }else{
+            affiliateUserProvider.changeIdCategory(value: listData[0]);
+          }
+        }
+
         if(errorText.isEmpty){
           try{
             affiliateUserProvider.changePage(value: 2);

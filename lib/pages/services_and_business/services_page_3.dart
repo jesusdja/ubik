@@ -7,7 +7,6 @@ import 'package:ubik/pages/services_and_business/widgets/map_view_details.dart';
 import 'package:ubik/providers/category_provider.dart';
 import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
-import 'package:ubik/widgets_utils/button_profile.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
@@ -124,24 +123,22 @@ class _ServicesDetailsState extends State<ServicesDetails> {
   }
 
   Widget columnContainer(){
-
     String description = categoryProvider.userSelectedDetails['description'] ?? ''; //'Profesional de cerrajería con más de 10 años de experiencia.\nEnim malesuada erat lectus magna gravida cras ultricies ac lacus aliquet velit et sapien hac pulvinar felis massa pellentesque feugiat tempus pulvinar et metus mauris vel nulla auctor nunc, quis elementum proin lectus sed fermentum vitae purus in fermentum fusce dui quam quis varius in est sit vivamus quis integer vel vitae ut ac non felis sagittis, amet pharetra, pellentesque risus, et lobortis sed mus sit cras a sed aliquam massa id eros, nec duis in vestibulum in turpis sapien at mi nunc dictum posuere magna diam massa arcu accumsan, ac dictum adipiscing faucibus aliquam lacus, ipsum leo.';
-    //TODO CHANGE
     List<Widget> listStar = [star(2),star(2),star(2),star(2),star(2),];
-    // if(widget.servicesAffiliate['affiliate_rate'] != null && widget.servicesAffiliate['affiliate_rate'] != ''){
-    //   double affiliateRate = double.parse(widget.servicesAffiliate['affiliate_rate']);
-    //   if(affiliateRate <= 0.5){ listStar = [star(2),star(2),star(2),star(2),star(2),];}
-    //   if(affiliateRate > 0.5 && affiliateRate < 1){ listStar = [star(1),star(2),star(2),star(2),star(2),];}
-    //   if(affiliateRate >= 1 && affiliateRate < 1.5){listStar = [star(0),star(2),star(2),star(2),star(2),];}
-    //   if(affiliateRate >= 1.5 && affiliateRate < 2){listStar = [star(0),star(1),star(2),star(2),star(2),];}
-    //   if(affiliateRate >= 2 && affiliateRate < 2.5){listStar = [star(0),star(0),star(2),star(2),star(2),];}
-    //   if(affiliateRate >= 2.5 && affiliateRate < 3){listStar = [star(0),star(0),star(1),star(2),star(2),];}
-    //   if(affiliateRate >= 3 && affiliateRate < 3.5){listStar = [star(0),star(0),star(0),star(2),star(2),];}
-    //   if(affiliateRate >= 3.5 && affiliateRate < 4){listStar = [star(0),star(0),star(0),star(1),star(2),];}
-    //   if(affiliateRate >= 4 && affiliateRate < 4.5){listStar = [star(0),star(0),star(0),star(0),star(2),];}
-    //   if(affiliateRate >= 4.5 && affiliateRate < 5){listStar = [star(0),star(0),star(0),star(0),star(1),];}
-    //   if(affiliateRate >= 5){listStar = [star(0),star(0),star(0),star(0),star(0),];}
-    // }
+    if(categoryProvider.userSelectedDetails['pointRate'] != null && categoryProvider.userSelectedDetails['pointRate'] != 0.0){
+      double affiliateRate = categoryProvider.userSelectedDetails['pointRate'];
+      if(affiliateRate <= 0.5){ listStar = [star(2),star(2),star(2),star(2),star(2),];}
+      if(affiliateRate > 0.5 && affiliateRate < 1){ listStar = [star(1),star(2),star(2),star(2),star(2),];}
+      if(affiliateRate >= 1 && affiliateRate < 1.5){listStar = [star(0),star(2),star(2),star(2),star(2),];}
+      if(affiliateRate >= 1.5 && affiliateRate < 2){listStar = [star(0),star(1),star(2),star(2),star(2),];}
+      if(affiliateRate >= 2 && affiliateRate < 2.5){listStar = [star(0),star(0),star(2),star(2),star(2),];}
+      if(affiliateRate >= 2.5 && affiliateRate < 3){listStar = [star(0),star(0),star(1),star(2),star(2),];}
+      if(affiliateRate >= 3 && affiliateRate < 3.5){listStar = [star(0),star(0),star(0),star(2),star(2),];}
+      if(affiliateRate >= 3.5 && affiliateRate < 4){listStar = [star(0),star(0),star(0),star(1),star(2),];}
+      if(affiliateRate >= 4 && affiliateRate < 4.5){listStar = [star(0),star(0),star(0),star(0),star(2),];}
+      if(affiliateRate >= 4.5 && affiliateRate < 5){listStar = [star(0),star(0),star(0),star(0),star(1),];}
+      if(affiliateRate >= 5){listStar = [star(0),star(0),star(0),star(0),star(0),];}
+    }
 
     String phone = '${getDataCountries()[categoryProvider.userSelectedDetails['prePhone']]![1]}${categoryProvider.userSelectedDetails['phone']}';
 
@@ -313,25 +310,15 @@ class _ServicesDetailsState extends State<ServicesDetails> {
               ),
             ),
             SizedBox(width: sizeW * 0.02,),
-            Expanded(child: Text(data,style: UbicaStyles().stylePrimary(size: sizeH * 0.018,color: colorFont, enumStyle: EnumStyle.light),)),
+            type == 2 ?
+            Expanded(child: Text(data,style: UbicaStyles().stylePrimary(size: sizeH * 0.018,color: colorFont, enumStyle: EnumStyle.light),))
+              :
+            Expanded(child: FittedBox(
+              fit:BoxFit.contain,
+              child: Text(data,style: UbicaStyles().stylePrimary(size: sizeH * 0.018,color: colorFont, enumStyle: EnumStyle.light),)),
+            ),
             SizedBox(width: sizeW * 0.02,),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget iconSocial(double sizeH, double sizeW, String image){
-    return Expanded(
-      child: Container(
-        width: sizeH * 0.05,
-        height: sizeH * 0.05,
-        margin: EdgeInsets.only(right: sizeW * 0.008),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: ViewImage().assetsImage('assets/image/icon_social_media_$image.png').image,
-            fit: BoxFit.contain,
-          ),
         ),
       ),
     );
@@ -407,12 +394,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
             width: sizeW,
             height: sizeH * 0.4,
             margin: EdgeInsets.symmetric(horizontal: sizeW * 0.06),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: ViewImage().netWork(galleryMap['image']).image,
-                fit: BoxFit.fitWidth,
-              ),
-            ),
+            child: ViewImage().netWorkCache(galleryMap['image'],boxFit: BoxFit.fitWidth),
           ),
         ),
       ];
@@ -422,12 +404,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
           width: sizeW,
           height: sizeH * 0.4,
           margin: EdgeInsets.symmetric(horizontal: sizeW * 0.06),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: ViewImage().netWork(photos[x]).image,
-              fit: BoxFit.fitWidth,
-            ),
-          ),
+          child: ViewImage().netWorkCache(photos[x],boxFit: BoxFit.fitWidth),
         ));
       }
 
@@ -602,9 +579,6 @@ class _ServicesDetailsState extends State<ServicesDetails> {
           ),
         ),
       ),
-      actions: <Widget>[
-        buttonProfile(),
-      ],
     );
   }
 }

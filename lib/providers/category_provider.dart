@@ -61,6 +61,18 @@ class CategoryProvider extends ChangeNotifier {
       String idSelected = categorySelected['idC'];
       for (var users in dataBusinessAll) {
         if(users['categoryId'] == idSelected){
+
+          //Calcular rango
+          List rateAll = users['rate'];
+          if(rateAll.isNotEmpty){
+            double points = 0.0;
+            for (var element in rateAll) {
+              try{
+                points = points + element['point'];
+              }catch(_){}
+            }
+            users['pointRate'] = points / rateAll.length;
+          }
           listUsers.add(users);
         }
       }

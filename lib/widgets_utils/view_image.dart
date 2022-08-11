@@ -17,14 +17,14 @@ class ViewImage {
     return image;
   }
 
-  Widget netWorkCache(String ruta) {
+  Widget netWorkCache(String ruta, {BoxFit boxFit = BoxFit.fitHeight}) {
     Widget image = CachedNetworkImage(
       imageUrl: ruta,
       imageBuilder: (context, imageProvider) => Container(
         decoration: BoxDecoration(
           image: DecorationImage(
               image: imageProvider,
-              fit: BoxFit.fitHeight,
+              fit: boxFit,
           ),
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: const [
@@ -80,5 +80,49 @@ Widget containerImageAssets(double sizeH, double sizeW, String rutaName){
         fit: BoxFit.contain,
       ),
     ),
+  );
+}
+
+Widget avatarCircular({Color border = Colors.black, required String rutaImage, double radius = 10}){
+  return Container(
+    child: CircleAvatar(
+      radius: radius,
+      backgroundColor: UbicaColors.white,
+      backgroundImage: ViewImage().assetsImage('assets/image/$rutaImage').image,
+    ),
+    padding: const EdgeInsets.all(2.0), // borde width
+    decoration: BoxDecoration(
+      color: border, // border color
+      shape: BoxShape.circle,
+    ),
+  );
+}
+
+Widget avatarCircularNet({Color border = Colors.black, required String rutaImage, double radius = 10}){
+  return Container(
+    child: CircleAvatar(
+      radius: radius,
+      backgroundImage: ViewImage().netWork(rutaImage).image,
+    ),
+    padding: const EdgeInsets.all(2.0), // borde width
+    decoration: BoxDecoration(
+      color: border, // border color
+      shape: BoxShape.circle,
+    ),
+  );
+}
+
+Widget avatarCircularImage({Color border = Colors.black, required Image image, double radius = 10}){
+  return Container(
+    child: CircleAvatar(
+      radius: radius,
+      backgroundImage: image.image,
+      backgroundColor: UbicaColors.white,
+    ),
+    padding: const EdgeInsets.all(2.0), // borde width
+    decoration: BoxDecoration(
+      color: border, // border color
+      shape: BoxShape.circle,
+    )
   );
 }
