@@ -27,6 +27,17 @@ class FirebaseConnectionInvoices{
     return listAll;
   }
 
+  Future<List<QueryDocumentSnapshot>> getInvoicesForUid({required String uid}) async{
+    List<QueryDocumentSnapshot> listAll = [];
+    try{
+      var result =  await invoicesCollection.where('uid',isEqualTo: uid).get();
+      listAll = result.docs.map((QueryDocumentSnapshot e) => e).toList();
+    }catch(ex){
+      debugPrint(ex.toString());
+    }
+    return listAll;
+  }
+
   Future<int> getInvoices({required String uid, required String idAff}) async{
     List<QueryDocumentSnapshot> listAll = [];
     try{
