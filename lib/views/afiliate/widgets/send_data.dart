@@ -247,6 +247,7 @@ class _SendDataState extends State<SendData> {
         'email' : Provider.of<UserProvider>(context,listen: false).userFirebase!.email,
         'photoURL' : Provider.of<UserProvider>(context,listen: false).userFirebase!.photoURL,
       };
+      data['create_at'] = DateTime.now().toString();
 
       bool res = await FirebaseConnectionAffiliates().createAffiliate(data);
       if(res){

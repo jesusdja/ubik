@@ -38,6 +38,17 @@ class FirebaseConnectionAffiliates{
     return listAll;
   }
 
+  Future<Map<String,dynamic>> getAffiliateDoc({required String id}) async{
+    Map<String,dynamic> listAll = {};
+    try{
+      var result =  await affiliatesCollection.doc(id).get();
+      return result.data() as Map<String,dynamic>;
+    }catch(ex){
+      debugPrint(ex.toString());
+    }
+    return listAll;
+  }
+
   Future<bool> editAffiliate({required Map<String, dynamic> data,required String id}) async {
     bool res = false;
     try{
