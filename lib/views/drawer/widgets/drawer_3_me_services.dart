@@ -1,17 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
-import 'package:ubik/providers/category_provider.dart';
-import 'package:ubik/providers/services_provider.dart';
 import 'package:ubik/services/firebase/firebase_connection_affiliates.dart';
 import 'package:ubik/services/firebase/firebase_connection_invoices.dart';
 import 'package:ubik/services/sharedprefereces.dart';
-import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/views/drawer/widgets/drawer_3_me_services_widget_1.dart';
 import 'package:ubik/views/drawer/widgets/drawer_3_me_services_widget_2.dart';
 import 'package:ubik/widgets_utils/appbar_widgets.dart';
@@ -34,6 +29,8 @@ class _DrawerMeServicesState extends State<DrawerMeServices> {
   List<Map<String,dynamic>> adAffiliate = [];
   List<Map<String,dynamic>> adInvoices = [];
 
+  List<QueryDocumentSnapshot> listAllInvoices = [];
+
   String uidFirebase = '';
   int page = 0;
 
@@ -47,10 +44,16 @@ class _DrawerMeServicesState extends State<DrawerMeServices> {
 
   Future initialDataInvoices() async{
     try{
-      List<QueryDocumentSnapshot> listAllInvoices = await FirebaseConnectionInvoices().getInvoicesForUid(uid: uidFirebase);
+      listAllInvoices = await FirebaseConnectionInvoices().getInvoicesForUid(uid: uidFirebase);
+      adInvoices = [];
       for (var element in listAllInvoices) {
         Map<String,dynamic> dataAffiliate = await FirebaseConnectionAffiliates().getAffiliateDoc(id: (element.data() as Map<String,dynamic>)['id_affiliate']);
         if(dataAffiliate.isNotEmpty){
+          dataAffiliate['affiliate_code'] = element.id;
+          Map<String,dynamic> dataElemente = element.data() as Map<String,dynamic>;
+          if(dataElemente.containsKey('isFinish')){
+            dataAffiliate['finish'] = dataElemente['isFinish'];
+          }
           adInvoices.add(dataAffiliate);
         }
       }
@@ -215,95 +218,92 @@ class _DrawerMeServicesState extends State<DrawerMeServices> {
       }
     }
 
-    return InkWell(
-      onTap: (){
-        // categoryProvider.userSelectedDetails = dataUser;
-        // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context2) => const ServicesDetails()));
-      },
-      child: Container(
-        width: sizeW,
-        margin: EdgeInsets.only(bottom: sizeH * 0.01, top: sizeH * 0.01),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Hero(
-                  tag: dataUser['uid'],
-                  child: SizedBox(
-                    width: sizeW * 0.3,
-                    height: sizeW * 0.3,
-                    child: imageProfile,
-                  ),
+    return Container(
+      width: sizeW,
+      margin: EdgeInsets.only(bottom: sizeH * 0.01, top: sizeH * 0.01),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Hero(
+                tag: dataUser['uid'],
+                child: SizedBox(
+                  width: sizeW * 0.3,
+                  height: sizeW * 0.3,
+                  child: imageProfile,
                 ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(top: sizeH * 0.001,left: sizeW * 0.04),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(
-                          width: sizeW,
-                          child: Text(nameUser.replaceAll('|', ''), style: UbicaStyles().stylePrimary(size: sizeH * 0.025,fontWeight: FontWeight.bold, enumStyle: EnumStyle.regular),maxLines: 1,),
-                        ),
-                        SizedBox(height: sizeH * 0.005,),
-                        SizedBox(
-                          width: sizeW,
-                          child: RichText(
-                            textAlign: TextAlign.left,
-                            text: TextSpan(
-                              text: '',
-                              style: UbicaStyles().stylePrimary(size: sizeH * 0.02, enumStyle: EnumStyle.semiBold),
-                              children: [
-                                WidgetSpan(
-                                  child: Container(
-                                    width: sizeH * 0.02,
-                                    height: sizeH * 0.02,
-                                    margin: EdgeInsets.only(bottom: sizeH * 0.002),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: ViewImage().assetsImage('assets/image/icon_full_star_small.png').image,
-                                        fit: BoxFit.fill,
-                                      ),
+              ),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(top: sizeH * 0.001,left: sizeW * 0.04),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        width: sizeW,
+                        child: Text(nameUser.replaceAll('|', ''), style: UbicaStyles().stylePrimary(size: sizeH * 0.025,fontWeight: FontWeight.bold, enumStyle: EnumStyle.regular),maxLines: 1,),
+                      ),
+                      SizedBox(height: sizeH * 0.005,),
+                      SizedBox(
+                        width: sizeW,
+                        child: RichText(
+                          textAlign: TextAlign.left,
+                          text: TextSpan(
+                            text: '',
+                            style: UbicaStyles().stylePrimary(size: sizeH * 0.02, enumStyle: EnumStyle.semiBold),
+                            children: [
+                              WidgetSpan(
+                                child: Container(
+                                  width: sizeH * 0.02,
+                                  height: sizeH * 0.02,
+                                  margin: EdgeInsets.only(bottom: sizeH * 0.002),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: ViewImage().assetsImage('assets/image/icon_full_star_small.png').image,
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
                                 ),
-                                WidgetSpan(
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: sizeW * 0.01),
-                                    child: Text(double.parse(affiliateRate).toStringAsFixed(1),style: UbicaStyles().stylePrimary(size: sizeH * 0.02, fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),
-                                    ),
+                              ),
+                              WidgetSpan(
+                                child: Container(
+                                  margin: EdgeInsets.only(left: sizeW * 0.01),
+                                  child: Text(double.parse(affiliateRate).toStringAsFixed(1),style: UbicaStyles().stylePrimary(size: sizeH * 0.02, fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),
                                   ),
                                 ),
-                                WidgetSpan(
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: sizeW * 0.04),
-                                    child: containerImageAssets(sizeH * 0.02, sizeH * 0.02,'icon_direccion_profiles.png'),
-                                  ),
+                              ),
+                              WidgetSpan(
+                                child: Container(
+                                  margin: EdgeInsets.only(left: sizeW * 0.04),
+                                  child: containerImageAssets(sizeH * 0.02, sizeH * 0.02,'icon_direccion_profiles.png'),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(height: sizeH * 0.005,),
-                        SizedBox(
-                          child: Text(_description,
-                            style: UbicaStyles().stylePrimary(size: sizeH * 0.018,enumStyle: EnumStyle.regular),
-                            textAlign: TextAlign.justify,
-                            maxLines: 3,),
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: sizeH * 0.005,),
+                      SizedBox(
+                        child: Text(_description,
+                          style: UbicaStyles().stylePrimary(size: sizeH * 0.018,enumStyle: EnumStyle.regular),
+                          textAlign: TextAlign.justify,
+                          maxLines: 3,),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            SizedBox(height: sizeH * 0.01,),
-            buttonAd(dataUser: dataUser),
-          ],
-        ),
+              ),
+            ],
+          ),
+          SizedBox(height: sizeH * 0.01,),
+
+          dataUser.containsKey('finish') ?
+          Container() :
+          buttonAd(dataUser: dataUser),
+        ],
       ),
     );
   }
@@ -329,15 +329,18 @@ class _DrawerMeServicesState extends State<DrawerMeServices> {
 
   Widget buttonAdContainer({required Map<String, dynamic> dataUser, required int type}){
     return ButtonGeneral(
-      title: type == 0 ? 'NO REALIZADO' : 'CALIFICAR',
+      title: type == 0 ? 'NO REALIZADO' : 'REALIZADO',
       radius: 10,
       onPressed: () async {
-        showCupertinoModalPopup(
+        bool? res = await showCupertinoModalPopup(
           context: context,
           builder: (BuildContext context) {
-            return ClassQualifyAffiliate(invoiceAd: dataUser,type: type,);
+            return ClassQualifyAffiliate(invoiceAd: dataUser,type: type,listAllInvoices: listAllInvoices,);
           },
         );
+        if(res != null && res){
+          initialDataInvoices();
+        }
       },
       backgroundColor: type == 0 ? UbicaColors.primary : UbicaColors.color6FCF97,
       borderColor: type == 0 ? UbicaColors.primary : UbicaColors.color6FCF97,

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ubik/services/firebase/firebase_connection_affiliates.dart';
@@ -94,9 +95,15 @@ class CategoryProvider extends ChangeNotifier {
     String uidFirebase = SharedPrefs.prefs.getString('userFirebaseUbik') ?? '';
 
     try{
-      int exists = await FirebaseConnectionInvoices().getInvoices(uid: uidFirebase, idAff: userSelectedDetails['id']);
-
-      if(exists == 0){
+      List<QueryDocumentSnapshot> listAll = await FirebaseConnectionInvoices().getInvoices(uid: uidFirebase, idAff: userSelectedDetails['id']);
+      bool exists = true;
+      for (var element in listAll) {
+        Map<String,dynamic> data = element.data() as Map<String,dynamic>;
+        if(!data.containsKey('isFinish')){
+          exists = false;
+        }
+      }
+      if(exists){
         Map<String,dynamic> data = {
           'id_affiliate' : userSelectedDetails['id'],
           'uid' : uidFirebase,
