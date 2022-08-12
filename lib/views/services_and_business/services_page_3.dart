@@ -4,11 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:ubik/config/ubik_colors.dart';
 import 'package:ubik/config/ubik_style.dart';
 import 'package:ubik/main.dart';
+import 'package:ubik/services/sharedprefereces.dart';
 import 'package:ubik/views/services_and_business/widgets/map_view_details.dart';
 import 'package:ubik/providers/category_provider.dart';
 import 'package:ubik/utils/get_data.dart';
 import 'package:ubik/widgets_utils/button_general.dart';
 import 'package:ubik/widgets_utils/circular_progress_colors.dart';
+import 'package:ubik/widgets_utils/toast_widget.dart';
 import 'package:ubik/widgets_utils/view_image.dart';
 
 class ServicesDetails extends StatefulWidget {
@@ -23,6 +25,13 @@ class _ServicesDetailsState extends State<ServicesDetails> {
   bool isLoadUser = false;
   bool isContract = false;
   late CategoryProvider categoryProvider;
+  String uidFirebase = '';
+
+  @override
+  void initState() {
+    super.initState();
+    uidFirebase = SharedPrefs.prefs.getString('userFirebaseUbik') ?? '';
+  }
 
   @override
   void dispose() {
@@ -267,6 +276,7 @@ class _ServicesDetailsState extends State<ServicesDetails> {
     }
     return InkWell(
       onTap: (){
+        if(uidFirebase == categoryProvider.userSelectedDetails['uid']) return showAlert(text: 'No puedes contactarte a ti mismo', isError: true);
         if(type == 0){
           String phone = '${getDataCountries()[categoryProvider.userSelectedDetails['prePhone']]![1]}${categoryProvider.userSelectedDetails['phone']}';
           phone = phone.replaceAll(' ','').replaceAll('+','');
@@ -516,7 +526,10 @@ class _ServicesDetailsState extends State<ServicesDetails> {
           Expanded(
             child: ButtonGeneral(
               title: 'SMS',
-              onPressed: () => Helpers.launchURL('sms: $phone'),
+              onPressed: () {
+                if(uidFirebase == categoryProvider.userSelectedDetails['uid']) return showAlert(text: 'No puedes contactarte a ti mismo', isError: true);
+                Helpers.launchURL('sms: $phone');
+              },
               backgroundColor: UbicaColors.primary,
               borderColor: UbicaColors.primary,
               textStyle: UbicaStyles().stylePrimary(size: sizeH * 0.018,color: UbicaColors.white,fontWeight: FontWeight.bold, enumStyle: EnumStyle.light),
@@ -538,8 +551,8 @@ class _ServicesDetailsState extends State<ServicesDetails> {
           Expanded(
             child: ButtonGeneral(
               title: 'CONTACTAR',
-              //TODO CHANGE
               onPressed: (){
+                if(uidFirebase == categoryProvider.userSelectedDetails['uid']) return showAlert(text: 'No puedes contactarte a ti mismo', isError: true);
                 showCupertinoModalPopup(
                   context: context,
                   builder: (BuildContext context) {
@@ -635,9 +648,10 @@ class _ShowCupertinoModalContactarState extends State<ShowCupertinoModalContacta
                 Container(
                   width: sizeW,
                   margin: EdgeInsets.symmetric(horizontal: sizeW * 0.1),
-                  child: Text('Al aceptar se creara un ticket ',
+                  child: Text('Al aceptar se creara un ticket para contratar los servicios de \n\n${categoryProvider.userSelectedDetails['name']}',
                     style: UbicaStyles().stylePrimary(size: sizeH * 0.02,
                     enumStyle: EnumStyle.regular,),
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 SizedBox(height: sizeH * 0.02),
@@ -653,7 +667,19 @@ class _ShowCupertinoModalContactarState extends State<ShowCupertinoModalContacta
                         isLoad = true;
                         setState(() {});
 
-                        await categoryProvider.contactarAffiliate();
+                        try{
+                          Map<String,dynamic> result = await categoryProvider.contactarAffiliate();
+                          Navigator.of(context).pop();
+                          showAlert(text: result['sms'], isError: result['error']);
+                          if(!result['error']){
+                            await Future.delayed(const Duration(seconds: 1));
+                            String phone = '${getDataCountries()[categoryProvider.userSelectedDetails['prePhone']]![1]}${categoryProvider.userSelectedDetails['phone']}';
+                            Helpers.launchURL('tel: $phone');
+                          }
+                        }catch(_){
+                          showAlert(text: 'Error de conexión con el servidor', isError: true);
+                        }
+
                         
                         isLoad = false;
                         setState(() {});

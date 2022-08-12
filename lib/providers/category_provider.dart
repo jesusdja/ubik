@@ -43,17 +43,14 @@ class CategoryProvider extends ChangeNotifier {
   Future initialFirebaseListener() async {
 
     refreshPosition();
-    String uidFirebase = SharedPrefs.prefs.getString('userFirebaseUbik') ?? '';
 
     FirebaseConnectionAffiliates().affiliatesCollection.snapshots().listen((event) {
       try{
         List<Map<String,dynamic>> dataBusinessAux = [];
         for (var element in event.docs) {
           Map<String,dynamic> data = element.data() as Map<String,dynamic>;
-          if(data['uid'] != uidFirebase){
-            data['id'] = element.id;
-            dataBusinessAux.add(data);
-          }
+          data['id'] = element.id;
+          dataBusinessAux.add(data);
         }
         listUserForCategory = dataBusinessAux;
       }catch(e){
@@ -92,20 +89,33 @@ class CategoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> contactarAffiliate() async{
-    bool res = false;
-    print('${userSelectedDetails}');
+  Future<Map<String,dynamic>> contactarAffiliate() async{
+    Map<String,dynamic> result = {'error' : true, 'sms' : 'Error de conexión'};
+    String uidFirebase = SharedPrefs.prefs.getString('userFirebaseUbik') ?? '';
 
     try{
+      int exists = await FirebaseConnectionInvoices().getInvoices(uid: uidFirebase, idAff: userSelectedDetails['id']);
 
-      Map<String,dynamic> data = {
+      if(exists == 0){
+        Map<String,dynamic> data = {
+          'id_affiliate' : userSelectedDetails['id'],
+          'uid' : uidFirebase,
+        };
 
-      };
+        bool res = await FirebaseConnectionInvoices().createInvoices(data);
+        if(res){
+          result = {'error' : false, 'sms' : 'Contactado con exito.!'};
+        }else{
+          result = {'error' : true, 'sms' : 'Error al crear el ticket de contratación'};
+        }
+      }else{
+        result = {'error' : true, 'sms' : 'Ya existe un ticket abierto con este ${typeCategory == 1 ? 'Servicio' : 'Comercio'}'};
+      }
+    }catch(_){
+      result = {'error' : true, 'sms' : 'Error de conexión con el servidor'};
+    }
 
-      //res = await FirebaseConnectionInvoices().createInvoices(data);
-    }catch(_){}
-
-    return res;
+    return result;
   }
 
 }
